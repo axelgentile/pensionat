@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Skapa nytt rum</title>
+</head>
+<body>
+
+<h1>Skapa nytt rum</h1>
+
+<form th:action="@{/rooms/create}" th:object="${room}" method="post">
+    <label>Rumsnummer:</label>
+    <input type="number" th:field="*{roomNumber}" required /><br>
+
+    <label>Rumstyp:</label>
+    <select th:field="*{roomType}">
+        <option value="SINGLE">Enkelrum</option>
+        <option value="DOUBLE">Dubbelrum</option>
+    </select><br>
+
+    <label>Pris per natt:</label>
+    <input type="number" th:field="*{pricePerNight}" required /><br>
+
+    <label>Extrasängar:</label>
+    <input type="number" th:field="*{extraBeds}" /><br>
+
+    <button type="submit">Skapa rum</button>
+</form>
+
+<div th:if="${errormessage}" style="color: red;">
+    <p th:text="${errormessage}"></p>
+</div>
+
+</body>
+</html>

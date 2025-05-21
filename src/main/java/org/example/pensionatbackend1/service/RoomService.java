@@ -6,8 +6,6 @@ import org.example.pensionatbackend1.Models.modelenums.RoomType;
 import org.example.pensionatbackend1.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
 import java.util.List;
 
 @Service
@@ -19,6 +17,12 @@ public class RoomService{
         return roomRepository.findAll();
     }
 
+    public void validateRoomNumber(Room room){
+        Room existingRoom = roomRepository.findByRoomNumber(room.getRoomNumber());
+        if (existingRoom != null){
+            throw new IllegalArgumentException("Rummet finns redan.");
+        }
+    }
 
     public void validateBeds(Room room){
         if (room.getRoomType() == RoomType.SINGLE && room.getExtraBeds() > 0){
@@ -32,9 +36,11 @@ public class RoomService{
         }
     }
 
-    public Room createRoom(Room room){
+    public String createRoom(Room room){
         validateBeds(room);
-        return roomRepository.save(room);
+        validateRoomNumber(room);
+        roomRepository.save(room);
+        return "Rummet har skapats.";
     }
 
     public Room updateRoom(Long id, Room room){
