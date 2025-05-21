@@ -1,4 +1,6 @@
-package org.example.pensionatbackend1.mapper;
+/*package org.example.pensionatbackend1.mapper;
 
 public class RoomMapper {
 }
+*
+ */

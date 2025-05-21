@@ -1,4 +1,4 @@
-package org.example.pensionatbackend1.entity;
+package org.example.pensionatbackend1.Models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,4 +15,5 @@ public class Customer {
     @GeneratedValue
     @Id
     private Long id;
+    private String name;
 }
