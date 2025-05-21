@@ -1,9 +1,10 @@
 package org.example.pensionatbackend1.controller;
 
+import org.apache.coyote.Response;
 import org.example.pensionatbackend1.entity.Customer;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.example.pensionatbackend1.service.CustomerService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +13,22 @@ import java.util.List;
 @RequestMapping("/customer")
 public class CustomerController {
 
-    @GetMapping("/all")
-    public List<Customer> getAllCustomers() {
-        return new ArrayList<>();
+    private final CustomerService customerService;
+
+    public CustomerController(CustomerService customerService) {
+        this.customerService = customerService;
     }
 
+    @GetMapping("/all")
+    public List<Customer> getAllCustomers() {
+        return customerService.getAllCustomers();
+    }
 
+    @PostMapping("/register")
+    public ResponseEntity<Customer> registerCustomer(@RequestBody Customer customer) {
 
+        return null;
 
+    }
 
 }
