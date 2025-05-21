@@ -1,6 +1,7 @@
 package org.example.pensionatbackend1.controller;
 
 import org.example.pensionatbackend1.Models.Room;
+import org.example.pensionatbackend1.dto.RoomDto;
 import org.example.pensionatbackend1.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,7 @@ public class RoomController {
 
     @GetMapping("/all")
     public String showAllRooms(Model model) {
-        List<Room> rooms = roomService.getAllRooms();
+        List<RoomDto> rooms = roomService.getAllRoomDtos();
         model.addAttribute("rooms", rooms);
         return "rooms";
     }
