@@ -7,16 +7,15 @@ import org.example.pensionatbackend1.mapper.CustomerMapper;
 import org.example.pensionatbackend1.service.CustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
+import org.springframework.ui.Model;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import jakarta.validation.Valid;
 
 
-@RestController
+@Controller
 @RequestMapping("/customers")
 public class CustomerController {
 
@@ -27,8 +26,14 @@ public class CustomerController {
     }
 
     @GetMapping("/all")
-    public List<CustomerDto> getAllCustomers() {
-        return customerService.getAllCustomers().stream().map(CustomerMapper::toDto).collect(Collectors.toList());
+    public String  getAllCustomers(Model model) {
+        List<CustomerDto> customers = customerService.getAllCustomers()
+                .stream()
+                .map(CustomerMapper::toDto)
+                .collect(Collectors.toList());
+
+        model.addAttribute("customers", customers);
+        return "customers";
     }
 
     @GetMapping("/{id}")
