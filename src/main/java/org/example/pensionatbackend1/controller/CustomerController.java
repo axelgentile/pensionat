@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("/customers")
@@ -36,7 +38,7 @@ public class CustomerController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<CustomerDto> registerCustomer(@RequestBody CustomerDto customerDto) {
+    public ResponseEntity<CustomerDto> registerCustomer(@RequestBody @Valid CustomerDto customerDto) {
 
         Customer customer = CustomerMapper.toEntity(customerDto);
         Customer saved = customerService.createCustomer(customer);
