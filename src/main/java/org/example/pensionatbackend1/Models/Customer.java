@@ -15,5 +15,9 @@ public class Customer {
     @GeneratedValue
     @Id
     private Long id;
-    private String name;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String phoneNum;
+
 }

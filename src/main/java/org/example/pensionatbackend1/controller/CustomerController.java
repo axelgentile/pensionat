@@ -1,4 +1,52 @@
 package org.example.pensionatbackend1.controller;
 
+import org.apache.coyote.Response;
+import org.example.pensionatbackend1.dto.CustomerDto;
+import org.example.pensionatbackend1.entity.Customer;
+import org.example.pensionatbackend1.mapper.CustomerMapper;
+import org.example.pensionatbackend1.service.CustomerService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
+import java.util.List;
+import java.util.stream.Collectors;
+import jakarta.validation.Valid;
+
+
+@Controller
+@RequestMapping("/customers")
 public class CustomerController {
+
+    private final CustomerService customerService;
+
+    public CustomerController(CustomerService customerService) {
+        this.customerService = customerService;
+    }
+
+    @GetMapping("/all")
+    public String  getAllCustomers(Model model) {
+        List<CustomerDto> customers = customerService.getAllCustomers()
+                .stream()
+                .map(CustomerMapper::toDto)
+                .collect(Collectors.toList());
+
+        model.addAttribute("customers", customers);
+        return "customers";
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CustomerDto> getCustomerById(@PathVariable long id) {
+        Customer customer = customerService.getCustomerById(id);
+        return ResponseEntity.ok(CustomerMapper.toDto(customer));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<CustomerDto> registerCustomer(@RequestBody @Valid CustomerDto customerDto) {
+
+        Customer customer = CustomerMapper.toEntity(customerDto);
+        Customer saved = customerService.createCustomer(customer);
+        return ResponseEntity.status(HttpStatus.CREATED).body(CustomerMapper.toDto(saved));
+    }
 }
