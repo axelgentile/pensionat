@@ -24,8 +24,8 @@ public class BookingDto {
 
     @NotNull(message = "Startdatum krävs")
     @FutureOrPresent(message = "Startdatum kan inte vara i det förflutna")
-    private LocalDate startDate;
+    private LocalDate checkInDate;
 
     @NotNull(message = "Slutdatum krävs")
-    private LocalDate endDate;
+    private LocalDate checkOutDate;
 }
