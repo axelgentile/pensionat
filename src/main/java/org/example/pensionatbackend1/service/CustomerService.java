@@ -1,12 +1,11 @@
 package org.example.pensionatbackend1.service;
 
-import org.example.pensionatbackend1.entity.Customer;
+import org.example.pensionatbackend1.Models.Customer;
 import org.example.pensionatbackend1.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 
 @Service
@@ -14,7 +13,7 @@ public class CustomerService {
 
     private final CustomerRepository repository;
 
-    public CustomerService(CustomerRepository repository, CustomerRepository customerRepository) {
+    public CustomerService(CustomerRepository repository) {
         this.repository = repository;
     }
 
@@ -24,11 +23,22 @@ public class CustomerService {
 
     public Customer getCustomerById(long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException());
-
+                .orElseThrow(NoSuchElementException::new);
     }
 
-    public Customer createCustomer(Customer customer) {
-        return repository.save(customer);
+    public void createCustomer(Customer customer) {
+        repository.save(customer);
+    }
+    public void deleteCustomerById(long id){
+        repository.deleteById(id);
+    }
+    public void updateCustomer(Customer updateCustomer){
+        Customer existingCustomer = repository.findById(updateCustomer.getId()).orElseThrow(() -> new RuntimeException("Kunden hittades inte."));
+        existingCustomer.setFirstName(updateCustomer.getFirstName());
+        existingCustomer.setLastName(updateCustomer.getLastName());
+        existingCustomer.setEmail(updateCustomer.getEmail());
+        existingCustomer.setPhoneNum(updateCustomer.getPhoneNum());
+        repository.save(existingCustomer);
+
     }
 }

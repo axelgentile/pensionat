@@ -1,10 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Alla rum</title>
+    <style>
+        table {
+            width: 70%;
+            margin: auto;
+            border-collapse: collapse;
+            margin-top: 30px;
+            font-family: Arial, sans-serif;
+        }
+        th, td {
+            border: 1px solid #aaa;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #eee;
+        }
+        h1 {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+    </style>
 </head>
 <body>
+
+
+<h1>Alla kunder</h1>
+<div th:if="${successMessage}" style="color: green; text-align: center;">
+    <p th:text="${successMessage}"></p>
+</div>
+<div th:if="${deleteMessage}" style="color: red; text-align: center;">
+    <p th:text="${deleteMessage}"></p>
+</div>
+<div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px;">
+    <form th:action="@{/customers/register}" method="get">
+        <button type="submit">Registrera ny kund</button>
+    </form>
+    <form th:action="@{/rooms/all}" method="get">
+        <button type="submit">Gå till rum</button>
+    </form>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Kund förnamn</th>
+        <th>Kund efternamn</th>
+        <th>E-mail</th>
+        <th>Telefonnummer</th>
+        <th>Redigera kund</th>
+        <th>Ta bort kund</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="customer : ${customers}">
+        <td th:text="${customer.firstName}">Förnamn</td>
+        <td th:text="${customer.lastName}">Efternamn</td>
+        <td th:text="${customer.email}">email@example.com</td>
+        <td th:text="${customer.phoneNum}">0701234561</td>
+
+        <td>
+            <form th:action="@{/customers/edit/{id}(id=${customer.id})}" method="get">
+                <button type="submit">Redigera</button>
+            </form>
+        </td>
+
+        <td>
+            <form th:action="@{/customers/delete/{id}(id=${customer.id})}" method="post"
+                  onsubmit="return confirm('Är du säker på att du vill ta bort denna kund?');">
+                <button type="submit">Ta bort</button>
+            </form>
+        </td>
+
+    </tr>
+    </tbody>
+</table>
 
 </body>
 </html>

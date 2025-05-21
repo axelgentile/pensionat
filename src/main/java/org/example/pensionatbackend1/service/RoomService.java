@@ -38,11 +38,10 @@ public class RoomService{
         }
     }
 
-    public String createRoom(Room room){
+    public void createRoom(Room room){
         validateBeds(room);
         validateRoomNumber(room);
         roomRepository.save(room);
-        return "Rummet har skapats.";
     }
 
     public Room updateRoom(Long id, Room room){

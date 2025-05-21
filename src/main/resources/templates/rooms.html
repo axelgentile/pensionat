@@ -31,7 +31,14 @@
 <div th:if="${successMessage}" style="color: green; text-align: center;">
     <p th:text="${successMessage}"></p>
 </div>
-
+<div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px;">
+    <form th:action="@{/rooms/create}" method="get">
+        <button type="submit">Skapa nytt rum</button>
+    </form>
+    <form th:action="@{/customers/all}" method="get">
+        <button type="submit">Gå till kunder</button>
+    </form>
+</div>
 <table>
     <thead>
     <tr>

@@ -1,18 +1,17 @@
 package org.example.pensionatbackend1.controller;
 
-import org.apache.coyote.Response;
 import org.example.pensionatbackend1.dto.CustomerDto;
-import org.example.pensionatbackend1.entity.Customer;
+import org.example.pensionatbackend1.Models.Customer;
 import org.example.pensionatbackend1.mapper.CustomerMapper;
 import org.example.pensionatbackend1.service.CustomerService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 import java.util.List;
-import java.util.stream.Collectors;
 import jakarta.validation.Valid;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
@@ -29,8 +28,7 @@ public class CustomerController {
     public String  getAllCustomers(Model model) {
         List<CustomerDto> customers = customerService.getAllCustomers()
                 .stream()
-                .map(CustomerMapper::toDto)
-                .collect(Collectors.toList());
+                .map(CustomerMapper::toDto).toList();
 
         model.addAttribute("customers", customers);
         return "customers";
@@ -42,11 +40,60 @@ public class CustomerController {
         return ResponseEntity.ok(CustomerMapper.toDto(customer));
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<CustomerDto> registerCustomer(@RequestBody @Valid CustomerDto customerDto) {
+    @GetMapping("/register")
+    public String showRegisterCustomerForm(Model model) {
+        if (!model.containsAttribute("customerDto")){
+            model.addAttribute("customerDto", new CustomerDto());
+        }
 
-        Customer customer = CustomerMapper.toEntity(customerDto);
-        Customer saved = customerService.createCustomer(customer);
-        return ResponseEntity.status(HttpStatus.CREATED).body(CustomerMapper.toDto(saved));
+        return "register-customer";
     }
+
+    @PostMapping("/register")
+    public String registerCustomer(@Valid @ModelAttribute("customerDto") CustomerDto customerDto,
+                                   BindingResult bindingResult,
+                                   Model model, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("customerDto", customerDto);
+            return "register-customer";
+        }
+        Customer customer = CustomerMapper.toEntity(customerDto);
+        customerService.createCustomer(customer);
+        redirectAttributes.addFlashAttribute("successMessage", "Kund har registrerats.");
+        return "redirect:/customers/all";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteCustomer(@PathVariable long id,RedirectAttributes redirectAttributes) {
+        customerService.deleteCustomerById(id);
+        redirectAttributes.addFlashAttribute("deleteMessage", "Kund har tagits bort.");
+        return "redirect:/customers/all";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        Customer customer = customerService.getCustomerById(id);
+        CustomerDto customerDto = CustomerMapper.toDto(customer);
+        model.addAttribute("customerDto", customerDto);
+        return "edit-customer";
+
+    }
+    @PostMapping("/edit")
+    public String updateCustomer(@Valid @ModelAttribute("customerDto") CustomerDto customerDto,
+                                 BindingResult bindingResult,
+                                 Model model,
+                                 RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("customerDto", customerDto);
+            return "edit-customer";
+        }
+
+        Customer updatedCustomer = CustomerMapper.toEntity(customerDto);
+        customerService.updateCustomer(updatedCustomer);
+
+        redirectAttributes.addFlashAttribute("successMessage", "Kunden har uppdaterats!");
+        return "redirect:/customers/all";
+    }
+
+
 }

@@ -1,14 +1,11 @@
 package org.example.pensionatbackend1.dto;
 
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import java.math.BigDecimal;
 import org.example.pensionatbackend1.Models.modelenums.RoomType;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
@@ -16,18 +13,18 @@ import javax.validation.constraints.NotNull;
 public class RoomDto {
     private Long id;
 
-    @NotNull
+    @NotBlank
     @Min(1)
     private Integer roomNumber;
 
-    @NotNull
+    @NotBlank
     private RoomType roomType;
 
-    @NotNull
+    @NotBlank
     @DecimalMin("0.0")
     private BigDecimal pricePerNight;
 
-    @NotNull
+    @NotBlank
     @Min(0)
     @Max(2)
     private Integer extraBeds;
