@@ -13,11 +13,9 @@ import java.util.Optional;
 public class CustomerService {
 
     private final CustomerRepository repository;
-    private final CustomerRepository customerRepository;
 
     public CustomerService(CustomerRepository repository, CustomerRepository customerRepository) {
         this.repository = repository;
-        this.customerRepository = customerRepository;
     }
 
     public List<Customer> getAllCustomers() {
@@ -25,7 +23,7 @@ public class CustomerService {
     }
 
     public Customer getCustomerById(long id) {
-        return customerRepository.findById(id)
+        return repository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException());
 
     }
