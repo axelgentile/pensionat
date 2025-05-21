@@ -8,10 +8,10 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @Data
 public class CustomerDto {
-    @NotBlank
+    @NotBlank(message = "Förnamn kan inte vara tomt")
     private String firstName;
-    @NotBlank
+    @NotBlank(message = "Efternamn kan inte vara tomt")
     private String lastName;
-    @NotBlank @Email
+    @NotBlank(message = "Emailaddress kan inte vara tom") @Email(message = "Ogiltig emailaddress")
     private String email;
 }
