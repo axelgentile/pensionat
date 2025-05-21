@@ -24,6 +24,6 @@ public class Room {
     private Long id;
     private Integer roomNumber;
     private RoomType roomType;
-    private BigDecimal pricePerNight;
+    private double pricePerNight;
     private int extraBeds;
 }

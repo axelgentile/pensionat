@@ -29,7 +29,7 @@ public class CustomerService {
     public void createCustomer(Customer customer) {
         repository.save(customer);
     }
-    public void deleteCustomerById(long id){
+    public void deleteCustomerById(Long id){
         repository.deleteById(id);
     }
     public void updateCustomer(Customer updateCustomer){

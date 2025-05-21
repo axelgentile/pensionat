@@ -25,7 +25,7 @@ public class CustomerController {
     }
 
     @GetMapping("/all")
-    public String  getAllCustomers(Model model) {
+    public String getAllCustomers(Model model) {
         List<CustomerDto> customers = customerService.getAllCustomers()
                 .stream()
                 .map(CustomerMapper::toDto).toList();

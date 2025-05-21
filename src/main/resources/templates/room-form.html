@@ -22,7 +22,7 @@
 
 <h1>Skapa nytt rum</h1>
 
-<form th:action="@{/rooms/create}" th:object="${room}" method="post">
+<form th:action="@{/rooms/create}" th:object="${roomDto}" method="post">
     <label>Rumsnummer:</label>
     <input type="number" th:field="*{roomNumber}" required /><br>
 
@@ -40,7 +40,6 @@
 
     <button type="submit">Skapa rum</button>
 </form>
-
 <div th:if="${errormessage}" style="color: red;">
     <p th:text="${errormessage}"></p>
 </div>

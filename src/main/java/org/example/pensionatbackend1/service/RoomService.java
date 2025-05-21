@@ -3,12 +3,10 @@ package org.example.pensionatbackend1.service;
 
 import org.example.pensionatbackend1.Models.Room;
 import org.example.pensionatbackend1.Models.modelenums.RoomType;
-import org.example.pensionatbackend1.dto.RoomDto;
 import org.example.pensionatbackend1.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class RoomService{
@@ -54,19 +52,8 @@ public class RoomService{
         return roomRepository.save(existingRoom);
     }
 
-    public List<RoomDto> getAllRoomDtos() {
-        return getAllRooms().stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-    }
-    private RoomDto convertToDto(Room room) {
-        return new RoomDto(
-                room.getId(),
-                room.getRoomNumber(),
-                room.getRoomType(),
-                room.getPricePerNight(),
-                room.getExtraBeds()
-        );
+    public void deleteRoomById(Long id){
+        roomRepository.deleteById(id);
     }
 
 }
