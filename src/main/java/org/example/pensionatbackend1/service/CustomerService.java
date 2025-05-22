@@ -1,6 +1,7 @@
 package org.example.pensionatbackend1.service;
 
 import org.example.pensionatbackend1.Models.Customer;
+import org.example.pensionatbackend1.repository.BookingRepository;
 import org.example.pensionatbackend1.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +13,11 @@ import java.util.NoSuchElementException;
 public class CustomerService {
 
     private final CustomerRepository repository;
+    private final BookingRepository bookingRepository;
 
-    public CustomerService(CustomerRepository repository) {
+    public CustomerService(CustomerRepository repository, BookingRepository bookingRepository) {
         this.repository = repository;
+        this.bookingRepository = bookingRepository;
     }
 
     public List<Customer> getAllCustomers() {
@@ -30,6 +33,10 @@ public class CustomerService {
         repository.save(customer);
     }
     public void deleteCustomerById(Long id){
+        boolean hasBooking = bookingRepository.existsByCustomerId(id);
+        if (hasBooking){
+            throw new IllegalArgumentException("Kunden har bokningar.");
+        }
         repository.deleteById(id);
     }
     public void updateCustomer(Customer updateCustomer){
