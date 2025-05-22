@@ -3,15 +3,18 @@ package org.example.pensionatbackend1.service;
 
 import org.example.pensionatbackend1.Models.Room;
 import org.example.pensionatbackend1.Models.modelenums.RoomType;
+import org.example.pensionatbackend1.repository.BookingRepository;
 import org.example.pensionatbackend1.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
+import java.util.List;
 @Service
 public class RoomService{
     @Autowired
     private RoomRepository roomRepository;
+    @Autowired
+    private BookingRepository bookingRepository;
 
     public List<Room> getAllRooms(){
         return roomRepository.findAll();
@@ -41,17 +44,6 @@ public class RoomService{
         validateRoomNumber(room);
         roomRepository.save(room);
     }
-
-    public Room updateRoom(Long id, Room room){
-        Room existingRoom = roomRepository.findById(id).orElseThrow();
-        existingRoom.setRoomNumber(room.getRoomNumber());
-        existingRoom.setRoomType(room.getRoomType());
-        existingRoom.setPricePerNight(room.getPricePerNight());
-        existingRoom.setExtraBeds(room.getExtraBeds());
-        validateBeds(existingRoom);
-        return roomRepository.save(existingRoom);
-    }
-
     public void deleteRoomById(Long id){
         roomRepository.deleteById(id);
     }
