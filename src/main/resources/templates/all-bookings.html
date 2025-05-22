@@ -16,6 +16,7 @@
         <th>Rum</th>
         <th>Check-in</th>
         <th>Check-out</th>
+        <th>Åtgärder</th>
     </tr>
     </thead>
     <tbody>
@@ -26,6 +27,11 @@
         <td th:text="${booking.room.roomNumber}">Rumsnummer</td>
         <td th:text="${booking.checkInDate}">Check-in</td>
         <td th:text="${booking.checkOutDate}">Check-out</td>
+        <td>
+            <form th:action="@{'/bookings/delete/' + ${booking.id}}" method="post" style="display:inline">
+                <button type="submit" onclick="return confirm('Vill du avboka denna bokning?')">Avboka</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>

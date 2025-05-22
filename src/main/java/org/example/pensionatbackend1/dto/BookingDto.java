@@ -22,10 +22,15 @@ public class BookingDto {
     @NotNull(message = "Rums-ID krävs")
     private Long roomId;
 
+    private String customerFirstName;
+    private String customerLastName;
+    private Integer roomNumber;
+
     @NotNull(message = "Startdatum krävs")
     @FutureOrPresent(message = "Startdatum kan inte vara i det förflutna")
     private LocalDate checkInDate;
 
     @NotNull(message = "Slutdatum krävs")
     private LocalDate checkOutDate;
+
 }
