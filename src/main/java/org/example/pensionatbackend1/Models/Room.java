@@ -28,4 +28,13 @@ public class Room {
 
     @OneToMany(mappedBy = "room")
     private List<Booking> bookings;
+
+    public Room(Long id, Integer roomNumber, RoomType roomType, double pricePerNight, int extraBeds) {
+        this.id = id;
+        this.roomNumber = roomNumber;
+        this.roomType = roomType;
+        this.pricePerNight = pricePerNight;
+        this.extraBeds = extraBeds;
+    }
+
 }
