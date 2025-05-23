@@ -3,6 +3,7 @@ package org.example.pensionatbackend1.service;
 import org.example.pensionatbackend1.Models.Booking;
 import org.example.pensionatbackend1.Models.Customer;
 import org.example.pensionatbackend1.Models.Room;
+import org.example.pensionatbackend1.Models.modelenums.RoomType;
 import org.example.pensionatbackend1.dto.BookingDto;
 import org.example.pensionatbackend1.mapper.BookingMapper;
 import org.example.pensionatbackend1.repository.BookingRepository;
@@ -30,22 +31,10 @@ public class BookingService {
     //Hämta alla bokningar som DTO-lista
     public List<BookingDto> getAllBookings() {
         return bookingRepository.findAll().stream()
-                .map(bookingMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
-    public Booking getBookingById(Long id) {
-        return bookingRepository.findById(id)
-                .orElseThrow(NoSuchElementException::new);
+                .map(bookingMapper::toDto).toList();
     }
 
     public BookingDto createBooking(BookingDto dto) {
-        // TODO: Logik för att skapa bokning
-        // Datumregel
-        if (!dto.getCheckOutDate().isAfter(dto.getCheckInDate())) {
-            throw new IllegalArgumentException("Slutdatum måste vara efter startdatum");
-        }
-
         //Hämta och kontrollera rum samt kund
         Room room = roomRepository.findById(dto.getRoomId())
                 .orElseThrow(() -> new IllegalArgumentException("Rum ej hittat: " + dto.getRoomId()));
@@ -64,7 +53,6 @@ public class BookingService {
         Booking booking = bookingMapper.toEntity(dto, customer, room);
         Booking saved = bookingRepository.save(booking);
         return bookingMapper.toDto(saved);
-
     }
 
     public BookingDto updateBooking(BookingDto dto) {
@@ -122,11 +110,8 @@ public class BookingService {
             case SINGLE -> 1;
             case DOUBLE -> 2;
         };
+        int extraBeds = room.getRoomType() == RoomType.DOUBLE ? room.getExtraBeds() : 0;
 
-        return base + room.getExtraBeds();
-    }
-
-    private boolean checkIfDateIsAvailable() {
-        return false;
+        return base + extraBeds;
     }
 }

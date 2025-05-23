@@ -48,7 +48,6 @@
         <th>Rumsnummer</th>
         <th>Rumstyp</th>
         <th>Pris per natt</th>
-        <th>Extrasängar</th>
         <th>Redigera rum</th>
         <th>Ta bort rum</th>
     </tr>
@@ -58,7 +57,6 @@
         <td th:text="${room.roomNumber}">101</td>
         <td th:text="${room.roomType}">SINGLE</td>
         <td th:text="${room.pricePerNight} + ' kr'">750</td>
-        <td th:text="${room.extraBeds}">0</td>
 
         <td>
             <form th:action="@{/rooms/edit/{id}(id=${room.id})}" method="get">

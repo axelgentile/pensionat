@@ -7,7 +7,6 @@ import org.example.pensionatbackend1.repository.RoomRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,16 +20,16 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) {
         if (roomRepository.count() == 0) {
             List<Room> rooms = Arrays.asList(
-                    createRoom(101, RoomType.SINGLE, 895.00, 1),
-                    createRoom(102, RoomType.DOUBLE, 1195.00, 2),
-                    createRoom(103, RoomType.SINGLE, 895.00, 1),
-                    createRoom(201, RoomType.DOUBLE, 1195.00, 2),
+                    createRoom(101, RoomType.SINGLE, 895.00, 0),
+                    createRoom(102, RoomType.DOUBLE, 1195.00, 0),
+                    createRoom(103, RoomType.SINGLE, 895.00, 0),
+                    createRoom(201, RoomType.DOUBLE, 1195.00, 0),
                     createRoom(202, RoomType.SINGLE, 895.00, 0),
-                    createRoom(203, RoomType.DOUBLE, 1195.00, 2),
-                    createRoom(301, RoomType.SINGLE, 995.00, 1),
-                    createRoom(302, RoomType.DOUBLE, 1295.00, 2),
-                    createRoom(303, RoomType.SINGLE, 895.00, 1),
-                    createRoom(304, RoomType.DOUBLE, 1195.00, 2)
+                    createRoom(203, RoomType.DOUBLE, 1195.00, 0),
+                    createRoom(301, RoomType.SINGLE, 995.00, 0),
+                    createRoom(302, RoomType.DOUBLE, 1295.00, 0),
+                    createRoom(303, RoomType.SINGLE, 895.00, 0),
+                    createRoom(304, RoomType.DOUBLE, 1195.00, 0)
             );
 
             roomRepository.saveAll(rooms);
