@@ -25,7 +25,7 @@ public class CustomerController {
     }
 
     @GetMapping("/all")
-    public String  getAllCustomers(Model model) {
+    public String getAllCustomers(Model model) {
         List<CustomerDto> customers = customerService.getAllCustomers()
                 .stream()
                 .map(CustomerMapper::toDto).toList();
@@ -64,9 +64,13 @@ public class CustomerController {
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteCustomer(@PathVariable long id,RedirectAttributes redirectAttributes) {
-        customerService.deleteCustomerById(id);
-        redirectAttributes.addFlashAttribute("deleteMessage", "Kund har tagits bort.");
+    public String deleteCustomer(@PathVariable long id, RedirectAttributes redirectAttributes) {
+        try {
+            customerService.deleteCustomerById(id);
+            redirectAttributes.addFlashAttribute("deleteMessage", "Kund har tagits bort.");
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        }
         return "redirect:/customers/all";
     }
 

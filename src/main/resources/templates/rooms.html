@@ -31,6 +31,9 @@
 <div th:if="${successMessage}" style="color: green; text-align: center;">
     <p th:text="${successMessage}"></p>
 </div>
+<div th:if="${deleteMessage}" style="color: red; text-align: center;">
+    <p th:text="${deleteMessage}"></p>
+</div>
 <div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px;">
     <form th:action="@{/rooms/create}" method="get">
         <button type="submit">Skapa nytt rum</button>
@@ -46,6 +49,8 @@
         <th>Rumstyp</th>
         <th>Pris per natt</th>
         <th>Extrasängar</th>
+        <th>Redigera rum</th>
+        <th>Ta bort rum</th>
     </tr>
     </thead>
     <tbody>
@@ -54,9 +59,22 @@
         <td th:text="${room.roomType}">SINGLE</td>
         <td th:text="${room.pricePerNight} + ' kr'">750</td>
         <td th:text="${room.extraBeds}">0</td>
+
+        <td>
+            <form th:action="@{/rooms/edit/{id}(id=${room.id})}" method="get">
+                <button type="submit">Redigera</button>
+            </form>
+        </td>
+        <td>
+            <form th:action="@{/rooms/delete/{id}(id=${room.id})}" method="post"
+                  onsubmit="return confirm('Är du säker på att du vill ta bort detta rum?');">
+                <button type="submit">Ta bort</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>
 
 </body>
 </html>
+

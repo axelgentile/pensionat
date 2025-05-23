@@ -3,9 +3,12 @@ package org.example.pensionatbackend1.Models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -19,5 +22,8 @@ public class Customer {
     private String lastName;
     private String email;
     private String phoneNum;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Booking> bookings;
 
 }

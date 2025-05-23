@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="sv">
+<head>
+    <meta charset="UTF-8" />
+    <title>Alla Bokningar</title>
+</head>
+<body>
+<h1>Alla bokningar</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Boknings-ID</th>
+        <th>Förnamn</th>
+        <th>Efternamn</th>
+        <th>Rum</th>
+        <th>Check-in</th>
+        <th>Check-out</th>
+        <th>Åtgärder</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="booking : ${bookings}">
+        <td th:text="${booking.id}">ID</td>
+        <td th:text="${booking.customer.firstName}">Förnamn</td>
+        <td th:text="${booking.customer.lastName}">Efternamn</td>
+        <td th:text="${booking.room.roomNumber}">Rumsnummer</td>
+        <td th:text="${booking.checkInDate}">Check-in</td>
+        <td th:text="${booking.checkOutDate}">Check-out</td>
+        <td>
+            <form th:action="@{'/bookings/delete/' + ${booking.id}}" method="post" style="display:inline">
+                <button type="submit" onclick="return confirm('Vill du avboka denna bokning?')">Avboka</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

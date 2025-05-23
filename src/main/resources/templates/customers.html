@@ -34,6 +34,9 @@
 <div th:if="${deleteMessage}" style="color: red; text-align: center;">
     <p th:text="${deleteMessage}"></p>
 </div>
+<div th:if="${errorMessage}" style="color: red;">
+    <p th:text="${errorMessage}"></p>
+</div>
 <div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px;">
     <form th:action="@{/customers/register}" method="get">
         <button type="submit">Registrera ny kund</button>
