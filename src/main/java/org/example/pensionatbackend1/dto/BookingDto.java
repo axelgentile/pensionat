@@ -37,5 +37,6 @@ public class BookingDto {
     @NotNull(message = "Slutdatum krävs")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate checkOutDate;
+    private int guests;
 
 }

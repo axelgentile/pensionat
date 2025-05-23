@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="sv">
+<head>
+    <meta charset="UTF-8" />
+    <title>Redigera bokning</title>
+</head>
+<body>
+<h1>Redigera bokning</h1>
+
+<div th:if="${errorMessage}" style="color: red;">
+    <p th:text="${errorMessage}"></p>
+</div>
+
+<div th:if="${successMessage}" style="color: green;">
+    <p th:text="${successMessage}"></p>
+</div>
+
+
+<form th:action="@{'/bookings/edit/' + ${booking.id} + '/searchAvailableRooms'}" method="post" th:object="${roomSearchDto}">
+    <label for="checkIn">Check-in datum:</label>
+    <input type="date" th:field="*{checkIn}" id="checkIn" />
+    <div th:if="${#fields.hasErrors('checkIn')}" th:errors="*{checkIn}" style="color: red"></div>
+
+    <label for="checkOut">Check-out datum:</label>
+    <input type="date" th:field="*{checkOut}" id="checkOut" />
+    <div th:if="${#fields.hasErrors('checkOut')}" th:errors="*{checkOut}" style="color: red"></div>
+
+    <label for="guests">Antal gäster:</label>
+    <input type="number" th:field="*{guests}" id="guests" min="1" />
+    <div th:if="${#fields.hasErrors('guests')}" th:errors="*{guests}" style="color: red"></div>
+
+    <button type="submit">Sök lediga rum</button>
+</form>
+
+
+<div th:if="${availableRooms != null and !availableRooms.isEmpty()}">
+    <form th:action="@{'/bookings/edit/' + ${booking.id}}" method="post" style="margin-top: 20px;">
+        <input type="hidden" name="checkIn" th:value="${roomSearchDto.checkIn}" />
+        <input type="hidden" name="checkOut" th:value="${roomSearchDto.checkOut}" />
+        <input type="hidden" name="guests" th:value="${roomSearchDto.guests}" />
+
+        <h2>Lediga rum + ditt rum</h2>
+        <table border="1">
+            <thead>
+            <tr>
+                <th>Rum</th>
+                <th>Typ</th>
+                <th>Pris</th>
+                <th>Välj</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="room : ${availableRooms}">
+                <td th:text="${room.roomNumber}"></td>
+                <td th:text="${room.roomType}"></td>
+                <td th:text="${room.pricePerNight} + ' kr'"></td>
+                <td>
+                    <input type="radio" name="roomId" th:value="${room.id}"
+                           th:checked="${room.id == booking.roomId}" required />
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <button type="submit">Spara ändringar</button>
+    </form>
+</div>
+
+<div th:if="${availableRooms == null or availableRooms.isEmpty()}" style="margin-top: 20px; color: grey;">
+    <p>Sök först efter lediga rum.</p>
+</div>
+
+</body>
+</html>

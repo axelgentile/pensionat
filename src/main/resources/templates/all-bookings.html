@@ -38,10 +38,9 @@
             <form th:action="@{'/bookings/delete/' + ${booking.id}}" method="post" style="display:inline">
                 <button type="submit" onclick="return confirm('Vill du avboka denna bokning?')">Avboka</button>
             </form>
-
-            <a th:href="@{'/bookings/update/' + ${booking.id}}" style="margin-left: 10px;">
-                <button type="button">Uppdatera</button>
-            </a>
+            <form th:action="@{'/bookings/edit/' + ${booking.id}}" method="get" style="display:inline;">
+                <button type="submit">Uppdatera</button>
+            </form>
         </td>
     </tr>
     </tbody>

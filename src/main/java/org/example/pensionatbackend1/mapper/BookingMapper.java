@@ -21,6 +21,7 @@ public class BookingMapper {
         dto.setRoomNumber(booking.getRoom().getRoomNumber());
         dto.setCheckInDate(booking.getCheckInDate());
         dto.setCheckOutDate(booking.getCheckOutDate());
+        dto.setGuests(booking.getGuests());
         return dto;
     }
 
@@ -31,6 +32,7 @@ public class BookingMapper {
         booking.setRoom(room);
         booking.setCheckInDate(dto.getCheckInDate());
         booking.setCheckOutDate(dto.getCheckOutDate());
+        booking.setGuests(dto.getGuests());
         return booking;
     }
 }
