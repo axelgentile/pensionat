@@ -7,6 +7,13 @@
 <body>
 <h1>Alla bokningar</h1>
 
+<div th:if="${successMessage}" style="color: green; font-weight: bold; margin-bottom: 1em;">
+    <p th:text="${successMessage}">Bokningen lyckades!</p>
+</div>
+<div th:if="${bookingmessage}" style="color: red; font-weight: bold; margin-bottom: 1em;">
+    <p th:text="${bookingmessage}">Bokningen avbröts!</p>
+</div>
+
 <table border="1">
     <thead>
     <tr>
@@ -16,16 +23,26 @@
         <th>Rum</th>
         <th>Check-in</th>
         <th>Check-out</th>
+        <th>Åtgärder</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="booking : ${bookings}">
         <td th:text="${booking.id}">ID</td>
-        <td th:text="${booking.customer.firstName}">Förnamn</td>
-        <td th:text="${booking.customer.lastName}">Efternamn</td>
-        <td th:text="${booking.room.roomNumber}">Rumsnummer</td>
+        <td th:text="${booking.customerFirstName}">Förnamn</td>
+        <td th:text="${booking.customerLastName}">Efternamn</td>
+        <td th:text="${booking.roomNumber}">Rumsnummer</td>
         <td th:text="${booking.checkInDate}">Check-in</td>
         <td th:text="${booking.checkOutDate}">Check-out</td>
+        <td>
+            <form th:action="@{'/bookings/delete/' + ${booking.id}}" method="post" style="display:inline">
+                <button type="submit" onclick="return confirm('Vill du avboka denna bokning?')">Avboka</button>
+            </form>
+
+            <a th:href="@{'/bookings/update/' + ${booking.id}}" style="margin-left: 10px;">
+                <button type="button">Uppdatera</button>
+            </a>
+        </td>
     </tr>
     </tbody>
 </table>

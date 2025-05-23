@@ -13,10 +13,6 @@
         padding: 5px;
         width: 300px;
     }
-    .error {
-        color: red;
-        font-size: 0.9em;
-    }
 </style>
 <body>
 
@@ -34,9 +30,6 @@
 
     <label>Pris per natt:</label>
     <input type="number" th:field="*{pricePerNight}" required /><br>
-
-    <label>Extrasängar:</label>
-    <input type="number" th:field="*{extraBeds}" /><br>
 
     <button type="submit">Skapa rum</button>
 </form>
