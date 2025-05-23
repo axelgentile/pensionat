@@ -13,16 +13,16 @@ import org.example.pensionatbackend1.Models.modelenums.RoomType;
 public class RoomDto {
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Måste fyllas i")
     @Min(1)
     private Integer roomNumber;
 
-    @NotBlank
+    @NotBlank(message = "Måste fyllas i")
     private RoomType roomType;
 
     @NotBlank
     @DecimalMin("0.0")
-    private BigDecimal pricePerNight;
+    private double pricePerNight;
 
     @NotBlank
     @Min(0)

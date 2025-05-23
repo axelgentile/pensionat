@@ -24,7 +24,6 @@
 
 <form th:action="@{/customers/edit}" th:object="${customerDto}" method="post">
 
-    <!-- ID, som hidden så att vi vet vilken kund som ska uppdateras -->
     <input type="hidden" th:field="*{id}" />
 
     <label for="firstName">Förnamn:</label>
