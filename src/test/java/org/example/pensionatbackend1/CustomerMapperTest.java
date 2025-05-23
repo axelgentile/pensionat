@@ -33,7 +33,7 @@ class CustomerMapperTest {
         dto.setId(2L);
         dto.setFirstName("Kurt");
         dto.setLastName("Andersson");
-        dto.setEmail("erik@test.com");
+        dto.setEmail("kurt@test.com");
         dto.setPhoneNum("0705551212");
 
         Customer customer = CustomerMapper.toEntity(dto);
@@ -41,7 +41,7 @@ class CustomerMapperTest {
         assertEquals(2L, customer.getId());
         assertEquals("Kurt", customer.getFirstName());
         assertEquals("Andersson", customer.getLastName());
-        assertEquals("erik@test.com", customer.getEmail());
+        assertEquals("kurt@test.com", customer.getEmail());
         assertEquals("0705551212", customer.getPhoneNum());
     }
 }
