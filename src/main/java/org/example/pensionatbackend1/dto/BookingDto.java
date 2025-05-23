@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
@@ -23,14 +24,18 @@ public class BookingDto {
     private Long roomId;
 
     private String customerFirstName;
+
     private String customerLastName;
+
     private Integer roomNumber;
 
     @NotNull(message = "Startdatum krävs")
     @FutureOrPresent(message = "Startdatum kan inte vara i det förflutna")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate checkInDate;
 
     @NotNull(message = "Slutdatum krävs")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate checkOutDate;
 
 }

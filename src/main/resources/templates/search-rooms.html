@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="sv">
+<head>
+    <meta charset="UTF-8" />
+    <title>Sök lediga rum</title>
+</head>
+<body>
+<h1>Sök lediga rum</h1>
+
+<form th:action="@{/bookings/searchAvailableRooms}" method="post" th:object="${roomSearchDto}">
+    <label for="checkIn">Check-in datum:</label>
+    <input type="date" th:field="*{checkIn}" id="checkIn" />
+    <div th:if="${#fields.hasErrors('checkIn')}" th:errors="*{checkIn}" style="color: red"></div>
+
+    <label for="checkOut">Check-out datum:</label>
+    <input type="date" th:field="*{checkOut}" id="checkOut" />
+    <div th:if="${#fields.hasErrors('checkOut')}" th:errors="*{checkOut}" style="color: red"></div>
+
+    <label for="guests">Antal gäster:</label>
+    <input type="number" th:field="*{guests}" id="guests" min="1" />
+    <div th:if="${#fields.hasErrors('guests')}" th:errors="*{guests}" style="color: red"></div>
+
+    <button type="submit">Sök</button>
+</form>
+
+</body>
+</html>
