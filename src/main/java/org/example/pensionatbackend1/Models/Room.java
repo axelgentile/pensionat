@@ -42,7 +42,7 @@ public class Room {
         this.extraBeds = extraBeds;
     }
 
-    @OneToMany(mappedBy = "room")
-    private List<Booking> bookings;
+//    @OneToMany(mappedBy = "room")
+//    private List<Booking> bookings;
 
 }
