@@ -1,0 +1,77 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    height: 70px;
+    background: #081d40;
+}
+
+.logo {
+    color: #fff;
+    padding: 16px;
+    font-family: "Poppins", sans-serif;
+    font-size: 1.2rem;
+
+}
+
+.app-body {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    height: 100vh;
+}
+
+.sidebar {
+    background: #081d40;
+    color: white;
+    width: 240px;
+    height: 100vh;
+    padding: 30px 0; /* bara topp/botten padding */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Allt vänsterjusterat */
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 50px;
+    padding-left: 20px; /* exakt samma som menyikoner */
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding-left: 20px; /* samma linje som loggan */
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #d1d5db;
+    font-size: 1.2rem;
+    padding: 8px 0;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    font-family: sans-serif;
+    font-weight: 300;
+}
+
+.menu-item.active {
+    color: #a3e635;
+}
+
+.menu-item:hover {
+    color: #ffffff;
+}
+
+.menu-item .icon {
+    font-size: 18px;
+}
