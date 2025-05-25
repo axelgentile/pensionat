@@ -3,18 +3,16 @@
 <head>
     <title>Skapa nytt rum</title>
 </head>
-<style>
-    label {
-        display: block;
-        margin-top: 10px;
-    }
-    input, button {
-        margin-top: 5px;
-        padding: 5px;
-        width: 300px;
-    }
-</style>
+<link rel="stylesheet" href="/css/style.css" />
 <body>
+
+<div class="sidebar">
+    <h2>BookMe</h2>
+    <a th:href="@{/customers/all}">Kunder</a>
+    <a th:href="@{/rooms/all}">Rum</a>
+    <a th:href="@{/bookings/all}">Bokningar</a>
+    <a th:href="@{/bookings/new}">Ny Bokning</a>
+</div>
 
 <h1>Skapa nytt rum</h1>
 

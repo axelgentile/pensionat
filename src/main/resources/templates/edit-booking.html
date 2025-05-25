@@ -1,10 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="sv">
 <head>
+    <link rel="stylesheet" href="/css/style.css" />
     <meta charset="UTF-8" />
     <title>Redigera bokning</title>
 </head>
 <body>
+
+<div class="sidebar">
+    <h2>BookMe</h2>
+    <a th:href="@{/customers/all}">Kunder</a>
+    <a th:href="@{/rooms/all}">Rum</a>
+    <a th:href="@{/bookings/all}">Bokningar</a>
+    <a th:href="@{/bookings/new}">Ny Bokning</a>
+</div>
 <h1>Redigera bokning</h1>
 
 <div th:if="${errorMessage}" style="color: red;">

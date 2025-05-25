@@ -1,48 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Alla rum</title>
-    <style>
-        table {
-            width: 70%;
-            margin: auto;
-            border-collapse: collapse;
-            margin-top: 30px;
-            font-family: Arial, sans-serif;
-        }
-        th, td {
-            border: 1px solid #aaa;
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #eee;
-        }
-        h1 {
-            text-align: center;
-            font-family: Arial, sans-serif;
-        }
-    </style>
+    <title>Alla kunder</title>
+    <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body>
 
+<div class="sidebar">
+    <h2>BookMe</h2>
+    <a th:href="@{/customers/all}">Kunder</a>
+    <a th:href="@{/rooms/all}">Rum</a>
+    <a th:href="@{/bookings/all}">Bokningar</a>
+    <a th:href="@{/bookings/new}">Ny Bokning</a>
+</div>
 
 <h1>Alla kunder</h1>
+
 <div th:if="${successMessage}" style="color: green; text-align: center;">
     <p th:text="${successMessage}"></p>
 </div>
+
 <div th:if="${deleteMessage}" style="color: red; text-align: center;">
     <p th:text="${deleteMessage}"></p>
 </div>
+
 <div th:if="${errorMessage}" style="color: red;">
     <p th:text="${errorMessage}"></p>
 </div>
+
 <div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px;">
     <form th:action="@{/customers/register}" method="get">
         <button type="submit">Registrera ny kund</button>
-    </form>
-    <form th:action="@{/rooms/all}" method="get">
-        <button type="submit">Gå till rum</button>
     </form>
 </div>
 
@@ -76,7 +64,6 @@
                 <button type="submit">Ta bort</button>
             </form>
         </td>
-
     </tr>
     </tbody>
 </table>

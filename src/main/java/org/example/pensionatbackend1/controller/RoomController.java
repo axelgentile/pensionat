@@ -5,6 +5,7 @@ import org.example.pensionatbackend1.mapper.RoomMapper;
 import org.example.pensionatbackend1.Models.Room;
 import org.example.pensionatbackend1.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
@@ -45,9 +46,23 @@ public class RoomController {
         }
     }
     @PostMapping("/delete/{id}")
-    public String deleteRoom(@PathVariable Long id , RedirectAttributes redirectAttributes){
-        roomService.deleteRoomById(id);
-        redirectAttributes.addFlashAttribute("deleteMessage", "Rummet har tagits bort.");
+    public String deleteRoom(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        if (roomService.getRoomById(id) == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Rummet finns inte.");
+            return "redirect:/rooms/all";
+        }
+        try {
+            roomService.deleteRoomById(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Rummet har tagits bort.");
+        } catch (DataIntegrityViolationException e) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Rummet kan inte tas bort eftersom det är bokat av en eller flera kunder.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Ett fel uppstod vid borttagning av rummet.");
+        }
+
         return "redirect:/rooms/all";
     }
+
 }
