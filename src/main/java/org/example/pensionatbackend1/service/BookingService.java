@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
+
 
 @Service
 public class BookingService {
@@ -32,6 +32,11 @@ public class BookingService {
     public List<BookingDto> getAllBookings() {
         return bookingRepository.findAll().stream()
                 .map(bookingMapper::toDto).toList();
+    }
+    public BookingDto getBookingById(Long id) {
+        Booking booking = bookingRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Ingen bokning hittades med ID: " + id));
+        return bookingMapper.toDto(booking);
     }
 
     public BookingDto createBooking(BookingDto dto) {
@@ -54,40 +59,6 @@ public class BookingService {
         Booking saved = bookingRepository.save(booking);
         return bookingMapper.toDto(saved);
     }
-
-    public BookingDto updateBooking(BookingDto dto) {
-        Booking existingBooking = bookingRepository.findById(dto.getId())
-                .orElseThrow(() -> new NoSuchElementException("Inget bokat rum med ID " + dto.getId()));
-
-        if (!dto.getCheckOutDate().isAfter(existingBooking.getCheckOutDate())) {
-            throw new NoSuchElementException("Slutdatum måste vara efter startdatum");
-        }
-
-        Room room = roomRepository.findById(dto.getRoomId())
-                .orElseThrow(() -> new IllegalArgumentException("Rum ej hittat: " + dto.getRoomId()));
-
-        Customer customer = customerRepository.findById(dto.getCustomerId())
-                .orElseThrow(() -> new IllegalArgumentException("Kund ej hittad: " + dto.getCustomerId()));
-
-
-        List<Booking> overlaps = bookingRepository.findOverlapping(
-                        room.getId(), dto.getCheckInDate(), dto.getCheckOutDate()).stream()
-                .filter(b -> !b.getId().equals(dto.getId()))
-                .toList();
-        if (!overlaps.isEmpty()) {
-            throw new IllegalArgumentException("Dubbelbokning vid uppdatering! Rummet är redan bokat.");
-        }
-
-        existingBooking.setRoom(room);
-        existingBooking.setCustomer(customer);
-        existingBooking.setCheckInDate(dto.getCheckInDate());
-        existingBooking.setCheckOutDate(dto.getCheckOutDate());
-
-        Booking saved = bookingRepository.save(existingBooking);
-
-        return bookingMapper.toDto(saved);
-    }
-
     public void deleteBooking(Long id) {
         if (!bookingRepository.existsById(id)) {
             throw new IllegalArgumentException("Bokningen existeras inte");
@@ -105,13 +76,52 @@ public class BookingService {
     }
 
     public int getMaxCapacityForRoom(Room room) {
-        //Returnera max antal personer ett rum klarar baserat på rumstyp och extrabäddar
         int base = switch (room.getRoomType()) {
             case SINGLE -> 1;
             case DOUBLE -> 2;
         };
-        int extraBeds = room.getRoomType() == RoomType.DOUBLE ? room.getExtraBeds() : 0;
+
+        int extraBeds = room.getRoomType() == RoomType.DOUBLE
+                ? Math.min(room.getExtraBeds(), 2)
+                : 0;
 
         return base + extraBeds;
     }
+
+
+    public BookingDto updateBooking(Long bookingId, BookingDto dto) {
+        Booking existingBooking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new NoSuchElementException("Ingen bokning hittades med ID: " + bookingId));
+
+        Room room = roomRepository.findById(dto.getRoomId())
+                .orElseThrow(() -> new IllegalArgumentException("Rum ej hittat: " + dto.getRoomId()));
+
+        Customer customer = customerRepository.findById(dto.getCustomerId())
+                .orElseThrow(() -> new IllegalArgumentException("Kund ej hittad: " + dto.getCustomerId()));
+
+        List<Booking> overlaps = bookingRepository.findOverlapping(room.getId(), dto.getCheckInDate(), dto.getCheckOutDate()).stream()
+                .filter(b -> !b.getId().equals(bookingId))
+                .toList();
+
+        if (!overlaps.isEmpty()) {
+            throw new IllegalArgumentException("Överlappande bokning! Rummet är redan bokat för valda datum.");
+        }
+
+        int maxCapacity = getMaxCapacityForRoom(room);
+        if (dto.getGuests() > maxCapacity) {
+            throw new IllegalArgumentException("Antal gäster överskrider rummets maxkapacitet (" + maxCapacity + ").");
+        }
+
+        existingBooking.setCheckInDate(dto.getCheckInDate());
+        existingBooking.setCheckOutDate(dto.getCheckOutDate());
+        existingBooking.setGuests(dto.getGuests());
+        existingBooking.setRoom(room);
+        existingBooking.setCustomer(customer);
+
+        Booking saved = bookingRepository.save(existingBooking);
+        return bookingMapper.toDto(saved);
+    }
+
+
+
 }
