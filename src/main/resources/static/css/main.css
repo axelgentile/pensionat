@@ -32,27 +32,16 @@ body {
 }
 
 .logo-container {
-  padding: 2rem 1.5rem;
+  padding: 1rem 1.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  text-align: center;
+  text-align: left;
 }
 
 .logo {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #ffffff;
   letter-spacing: -0.025em;
-  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.logo-subtitle {
-  font-size: 0.875rem;
-  color: #94a3b8;
-  margin-top: 0.25rem;
-  font-weight: 400;
 }
 
 .nav-menu {
