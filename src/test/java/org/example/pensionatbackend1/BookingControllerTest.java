@@ -6,6 +6,7 @@ import org.example.pensionatbackend1.controller.BookingController;
 import org.example.pensionatbackend1.dto.BookingDto;
 import org.example.pensionatbackend1.service.BookingService;
 import org.example.pensionatbackend1.service.CustomerService;
+import org.example.pensionatbackend1.service.RoomService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -18,7 +19,6 @@ import java.util.List;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -37,6 +37,9 @@ class BookingControllerTest {
 
     @MockBean
     private CustomerService customerService;
+
+    @MockBean
+    private RoomService roomService;
 
     @Test
     void showAllBookings_returnsViewWithBookings() throws Exception {

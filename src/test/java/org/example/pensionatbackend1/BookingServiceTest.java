@@ -64,16 +64,17 @@ public class BookingServiceTest {
         BookingDto dto = new BookingDto();
         dto.setRoomId(1L);
         dto.setCustomerId(1L);
-        dto.setCheckInDate(LocalDate.now());
-        dto.setCheckOutDate(LocalDate.now().plusDays(2));
+        dto.setCheckInDate(LocalDate.of(2025, 5, 26));
+        dto.setCheckOutDate(LocalDate.of(2025, 5, 28));
 
         Room room = new Room();
+        room.setId(1L); // ✅ FIXED
         Customer customer = new Customer();
         Booking booking = new Booking();
 
         when(roomRepository.findById(1L)).thenReturn(Optional.of(room));
         when(customerRepository.findById(1L)).thenReturn(Optional.of(customer));
-        when(bookingRepository.findOverlapping(anyLong(), any(), any())).thenReturn(List.of());
+        when(bookingRepository.findOverlapping(eq(1L), any(), any())).thenReturn(List.of()); // Now matches
         when(bookingMapper.toEntity(dto, customer, room)).thenReturn(booking);
         when(bookingRepository.save(booking)).thenReturn(booking);
         when(bookingMapper.toDto(booking)).thenReturn(dto);
@@ -89,16 +90,18 @@ public class BookingServiceTest {
         BookingDto dto = new BookingDto();
         dto.setRoomId(1L);
         dto.setCustomerId(1L);
-        dto.setCheckInDate(LocalDate.now());
-        dto.setCheckOutDate(LocalDate.now().plusDays(2));
+        dto.setCheckInDate(LocalDate.of(2025, 5, 26));
+        dto.setCheckOutDate(LocalDate.of(2025, 5, 28));
 
         Room room = new Room();
+        room.setId(1L); // ✅ FIXED
         Customer customer = new Customer();
         Booking existingBooking = new Booking();
 
         when(roomRepository.findById(1L)).thenReturn(Optional.of(room));
         when(customerRepository.findById(1L)).thenReturn(Optional.of(customer));
-        when(bookingRepository.findOverlapping(anyLong(), any(), any())).thenReturn(List.of(existingBooking));
+        when(bookingRepository.findOverlapping(eq(1L), any(), any()))
+                .thenReturn(List.of(existingBooking)); // Matches call with real ID
 
         assertThrows(IllegalArgumentException.class, () -> bookingService.createBooking(dto));
     }
