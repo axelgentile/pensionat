@@ -49,12 +49,6 @@ public class BookingController {
         return "redirect:/bookings/all";
     }
 
-    @GetMapping("/search")
-    public String showSearchForm(Model model) {
-        model.addAttribute("roomSearchDto", new RoomSearchDto());
-        return "search-rooms";
-    }
-
     @GetMapping("/new")
     public String showBookingForm(Model model) {
         model.addAttribute("roomSearchDto", new RoomSearchDto());

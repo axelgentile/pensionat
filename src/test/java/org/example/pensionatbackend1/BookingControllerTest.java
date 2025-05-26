@@ -54,7 +54,7 @@ class BookingControllerTest {
 
     @Test
     void showSearchForm_returnsViewWithRoomSearchDto() throws Exception {
-        mockMvc.perform(get("/bookings/search"))
+        mockMvc.perform(get("/bookings/new"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("search-rooms"))
                 .andExpect(model().attributeExists("roomSearchDto"));
