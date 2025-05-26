@@ -54,7 +54,7 @@ public class BookingMapperTest {
 
         Customer customer = new Customer();
         customer.setId(10L);
-        customer.setFirstName("Anna");
+        customer.setFirstName("Sven");
         customer.setLastName("Andersson");
 
         Room room = new Room();
