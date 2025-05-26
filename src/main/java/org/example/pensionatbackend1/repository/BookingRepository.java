@@ -23,4 +23,3 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     boolean existsByCustomerId(Long id);
 }
-
