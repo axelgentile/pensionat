@@ -33,7 +33,7 @@ public class RoomController {
         return "room-form";
     }
 
-    @PostMapping("create")
+    @PostMapping("/create")
     public String createRoom(@ModelAttribute("roomDto")RoomDto roomDto, RedirectAttributes redirectAttributes) {
         try {
             Room room = RoomMapper.toEntity(roomDto);
