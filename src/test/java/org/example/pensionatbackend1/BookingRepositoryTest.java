@@ -32,7 +32,7 @@ class BookingRepositoryTest {
     @Test
     @DisplayName("findOverlapping ska hitta överlappande bokningar")
     void findOverlapping_findsOverlappingBookings() {
-        Room room = new Room(null, 101, RoomType.DOUBLE, 100, 1);
+        Room room = new Room(null, 101, RoomType.DOUBLE, 100.00, 1);
         room = roomRepository.save(room);
 
         Customer customer = new Customer();
@@ -62,7 +62,7 @@ class BookingRepositoryTest {
     @Test
     @DisplayName("findOverlapping returnerar tom lista om ingen överlappning finns")
     void findOverlapping_noOverlap_returnsEmptyList() {
-        Room room = new Room(null, 102, RoomType.DOUBLE, 100, 1);
+        Room room = new Room(null, 102, RoomType.DOUBLE, 100.00, 1);
         room = roomRepository.save(room);
 
         Customer customer = new Customer();
@@ -91,7 +91,7 @@ class BookingRepositoryTest {
     @Test
     @DisplayName("existsByCustomerId returnerar true om kund har bokning")
     void existsByCustomerId_withBooking_returnsTrue() {
-        Room room = new Room(null, 103, RoomType.SINGLE, 80, 0);
+        Room room = new Room(null, 103, RoomType.SINGLE, 80.00, 0);
         room = roomRepository.save(room);
 
         Customer customer = new Customer();

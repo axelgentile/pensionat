@@ -74,8 +74,8 @@ class BookingControllerTest {
     @Test
     void searchAvailableRooms_validInput_returnsAvailableRoomsView() throws Exception {
         List<Room> rooms = List.of(
-                new Room(1L, 101, RoomType.DOUBLE, 100, 1),
-                new Room(2L, 102, RoomType.SINGLE, 80, 0)
+                new Room(1L, 101, RoomType.DOUBLE, 100.00, 1),
+                new Room(2L, 102, RoomType.SINGLE, 80.00, 0)
         );
 
         when(bookingService.searchAvailableRooms(any(), any(), anyInt())).thenReturn(rooms);
