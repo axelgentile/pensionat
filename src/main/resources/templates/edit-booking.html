@@ -1,130 +1,397 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="sv">
   <head>
-    <link rel="stylesheet" href="/css/style.css" />
     <meta charset="UTF-8" />
-    <title>Redigera bokning</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redigera bokning - BookMe</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/c4cbc11728.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
-    <div class="sidebar">
-      <h2>BookMe</h2>
-      <a th:href="@{/customers/all}">Kunder</a>
-      <a th:href="@{/rooms/all}">Rum</a>
-      <a th:href="@{/bookings/all}">Bokningar</a>
+    <div class="app-container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="logo-container">
+          <div class="logo">BookMe</div>
+        </div>
+
+        <nav class="nav-menu">
+          <div class="nav-section">
+            <div class="nav-section-title">Huvudmeny</div>
+            <a href="/bookings/all" class="nav-item active">
+              <span class="icon"><i class="fas fa-calendar-check"></i></span>
+              <span>Bokningar</span>
+            </a>
+            <a href="/customers/all" class="nav-item">
+              <span class="icon"><i class="fas fa-users"></i></span>
+              <span>Kunder</span>
+            </a>
+            <a href="/rooms/all" class="nav-item">
+              <span class="icon"><i class="fas fa-bed"></i></span>
+              <span>Rum</span>
+            </a>
+          </div>
+
+          <div class="nav-section">
+            <div class="nav-section-title">Verktyg</div>
+            <a href="/bookings/search" class="nav-item">
+              <span class="icon"><i class="fas fa-search"></i></span>
+              <span>Skapa ny bokning</span>
+            </a>
+            <a href="/bookings/new" class="nav-item">
+              <span class="icon"><i class="fas fa-plus-circle"></i></span>
+              <span>Ny bokning</span>
+            </a>
+            <a href="/customers/register" class="nav-item">
+              <span class="icon"><i class="fas fa-user-plus"></i></span>
+              <span>Registrera kund</span>
+            </a>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="page-header">
+          <h1 class="page-title">
+            <i
+              class="fas fa-edit"
+              style="margin-right: 0.5rem; color: #3b82f6"
+            ></i>
+            Redigera bokning
+          </h1>
+          <p class="page-subtitle">
+            Uppdatera bokningsdetaljer och välj nytt rum
+          </p>
+        </div>
+
+        <!-- Back Button -->
+        <div class="page-actions">
+          <a th:href="@{/bookings/all}" class="btn btn-outline">
+            <i class="fas fa-arrow-left"></i>
+            Tillbaka till bokningar
+          </a>
+        </div>
+
+        <!-- Messages -->
+        <div th:if="${errorMessage}" class="message message-error">
+          <i
+            class="fas fa-exclamation-triangle"
+            style="margin-right: 0.5rem"
+          ></i>
+          <span th:text="${errorMessage}"></span>
+        </div>
+        <div th:if="${successMessage}" class="message message-success">
+          <i class="fas fa-check-circle" style="margin-right: 0.5rem"></i>
+          <span th:text="${successMessage}"></span>
+        </div>
+
+        <!-- Search Form -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Sök lediga rum</h2>
+          </div>
+          <div class="card-content">
+            <form
+              th:action="@{'/bookings/edit/' + ${booking.id} + '/searchAvailableRooms'}"
+              method="post"
+              th:object="${roomSearchDto}"
+            >
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: 1fr 1fr 1fr;
+                  gap: 1.5rem;
+                  margin-bottom: 2rem;
+                "
+              >
+                <div class="form-group">
+                  <label for="checkIn" class="form-label">
+                    <i
+                      class="fas fa-calendar-alt"
+                      style="margin-right: 0.5rem"
+                    ></i>
+                    Check-in datum
+                  </label>
+                  <input
+                    type="date"
+                    th:field="*{checkIn}"
+                    id="checkIn"
+                    class="form-input"
+                    required
+                  />
+                  <div
+                    class="message message-error"
+                    th:if="${#fields.hasErrors('checkIn')}"
+                    th:errors="*{checkIn}"
+                  ></div>
+                </div>
+
+                <div class="form-group">
+                  <label for="checkOut" class="form-label">
+                    <i
+                      class="fas fa-calendar-alt"
+                      style="margin-right: 0.5rem"
+                    ></i>
+                    Check-out datum
+                  </label>
+                  <input
+                    type="date"
+                    th:field="*{checkOut}"
+                    id="checkOut"
+                    class="form-input"
+                    required
+                  />
+                  <div
+                    class="message message-error"
+                    th:if="${#fields.hasErrors('checkOut')}"
+                    th:errors="*{checkOut}"
+                  ></div>
+                </div>
+
+                <div class="form-group">
+                  <label for="guests" class="form-label">
+                    <i class="fas fa-users" style="margin-right: 0.5rem"></i>
+                    Antal gäster
+                  </label>
+                  <input
+                    type="number"
+                    th:field="*{guests}"
+                    id="guests"
+                    class="form-input"
+                    min="1"
+                    max="10"
+                    required
+                  />
+                  <div
+                    class="message message-error"
+                    th:if="${#fields.hasErrors('guests')}"
+                    th:errors="*{guests}"
+                  ></div>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 1rem">
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-search"></i>
+                  Sök lediga rum
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Available Rooms -->
+        <div
+          th:if="${availableRooms != null and !availableRooms.isEmpty()}"
+          class="card"
+        >
+          <div class="card-header">
+            <h2 class="card-title">Lediga rum + ditt nuvarande rum</h2>
+          </div>
+          <div class="card-content">
+            <form
+              th:action="@{'/bookings/edit/' + ${booking.id}}"
+              method="post"
+            >
+              <input
+                type="hidden"
+                name="checkIn"
+                th:value="${roomSearchDto.checkIn}"
+              />
+              <input
+                type="hidden"
+                name="checkOut"
+                th:value="${roomSearchDto.checkOut}"
+              />
+              <input
+                type="hidden"
+                name="guests"
+                th:value="${roomSearchDto.guests}"
+              />
+
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>
+                        <i
+                          class="fas fa-hashtag"
+                          style="margin-right: 0.5rem"
+                        ></i>
+                        Rumsnummer
+                      </th>
+                      <th>
+                        <i
+                          class="fas fa-door-open"
+                          style="margin-right: 0.5rem"
+                        ></i>
+                        Rumstyp
+                      </th>
+                      <th>
+                        <i
+                          class="fas fa-money-bill-wave"
+                          style="margin-right: 0.5rem"
+                        ></i>
+                        Pris per natt
+                      </th>
+                      <th>
+                        <i
+                          class="fas fa-check-circle"
+                          style="margin-right: 0.5rem"
+                        ></i>
+                        Välj
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="room : ${availableRooms}">
+                      <td>
+                        <span
+                          style="font-weight: 600; color: #1e293b"
+                          th:text="${room.roomNumber}"
+                        ></span>
+                      </td>
+                      <td>
+                        <span
+                          class="badge"
+                          th:classappend="${room.roomType == 'SINGLE'} ? 'badge-blue' : (${room.roomType == 'DOUBLE'} ? 'badge-green' : 'badge-purple')"
+                          th:text="${room.roomType}"
+                        ></span>
+                      </td>
+                      <td>
+                        <span
+                          style="font-weight: 500; color: #059669"
+                          th:text="${room.pricePerNight} + ' kr'"
+                        ></span>
+                      </td>
+                      <td>
+                        <input
+                          type="radio"
+                          name="roomId"
+                          th:value="${room.id}"
+                          th:checked="${room.id == booking.roomId}"
+                          required
+                          style="transform: scale(1.2); margin: 0"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div style="display: flex; gap: 1rem; margin-top: 2rem">
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-save"></i>
+                  Spara ändringar
+                </button>
+                <a th:href="@{/bookings/all}" class="btn btn-secondary">
+                  <i class="fas fa-times"></i>
+                  Avbryt
+                </a>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- No rooms message -->
+        <div
+          th:if="${availableRooms == null or availableRooms.isEmpty()}"
+          class="card"
+          style="margin-top: 1rem"
+        >
+          <div class="card-content">
+            <div style="text-align: center; padding: 2rem; color: #64748b">
+              <i
+                class="fas fa-search"
+                style="
+                  font-size: 2rem;
+                  margin-bottom: 1rem;
+                  display: block;
+                  opacity: 0.3;
+                "
+              ></i>
+              <div
+                style="font-size: 1rem; font-weight: 500; margin-bottom: 0.5rem"
+              >
+                Sök först efter lediga rum
+              </div>
+              <div style="font-size: 0.875rem">
+                Använd sökformuläret ovan för att hitta tillgängliga rum.
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
-    <h1>Redigera bokning</h1>
 
-    <div
-      th:if="${errorMessage}"
-      style="
-        color: red;
-        text-align: center;
-        margin-bottom: 1em;
-        font-weight: bold;
-      "
-    >
-      <p th:text="${errorMessage}"></p>
-    </div>
+    <style>
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
 
-    <div
-      th:if="${successMessage}"
-      style="
-        color: green;
-        text-align: center;
-        margin-bottom: 1em;
-        font-weight: bold;
-      "
-    >
-      <p th:text="${successMessage}"></p>
-    </div>
+      .form-label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #374151;
+        margin-bottom: 0.5rem;
+      }
 
-    <form
-      th:action="@{'/bookings/edit/' + ${booking.id} + '/searchAvailableRooms'}"
-      method="post"
-      th:object="${roomSearchDto}"
-    >
-      <label for="checkIn">Check-in datum:</label>
-      <input type="date" th:field="*{checkIn}" id="checkIn" />
-      <div
-        th:if="${#fields.hasErrors('checkIn')}"
-        th:errors="*{checkIn}"
-        style="color: red"
-      ></div>
+      .form-input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
 
-      <label for="checkOut">Check-out datum:</label>
-      <input type="date" th:field="*{checkOut}" id="checkOut" />
-      <div
-        th:if="${#fields.hasErrors('checkOut')}"
-        th:errors="*{checkOut}"
-        style="color: red"
-      ></div>
+      .form-input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
 
-      <label for="guests">Antal gäster:</label>
-      <input type="number" th:field="*{guests}" id="guests" min="1" />
-      <div
-        th:if="${#fields.hasErrors('guests')}"
-        th:errors="*{guests}"
-        style="color: red"
-      ></div>
+      .badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        border-radius: 9999px;
+        text-transform: uppercase;
+        letter-spacing: 0.025em;
+      }
 
-      <button type="submit">Sök lediga rum</button>
-    </form>
+      .badge-blue {
+        background-color: #dbeafe;
+        color: #1e40af;
+      }
 
-    <div th:if="${availableRooms != null and !availableRooms.isEmpty()}">
-      <form
-        th:action="@{'/bookings/edit/' + ${booking.id}}"
-        method="post"
-        style="margin-top: 20px"
-      >
-        <input
-          type="hidden"
-          name="checkIn"
-          th:value="${roomSearchDto.checkIn}"
-        />
-        <input
-          type="hidden"
-          name="checkOut"
-          th:value="${roomSearchDto.checkOut}"
-        />
-        <input type="hidden" name="guests" th:value="${roomSearchDto.guests}" />
+      .badge-green {
+        background-color: #d1fae5;
+        color: #065f46;
+      }
 
-        <h2>Lediga rum + ditt rum</h2>
-        <table border="1">
-          <thead>
-            <tr>
-              <th>Rum</th>
-              <th>Typ</th>
-              <th>Pris</th>
-              <th>Välj</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr th:each="room : ${availableRooms}">
-              <td th:text="${room.roomNumber}"></td>
-              <td th:text="${room.roomType}"></td>
-              <td th:text="${room.pricePerNight} + ' kr'"></td>
-              <td>
-                <input
-                  type="radio"
-                  name="roomId"
-                  th:value="${room.id}"
-                  th:checked="${room.id == booking.roomId}"
-                  required
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      .badge-purple {
+        background-color: #e9d5ff;
+        color: #7c3aed;
+      }
 
-        <button type="submit">Spara ändringar</button>
-      </form>
-    </div>
-
-    <div
-      th:if="${availableRooms == null or availableRooms.isEmpty()}"
-      style="margin-top: 20px; color: grey"
-    >
-      <p>Sök först efter lediga rum.</p>
-    </div>
+      @media (max-width: 768px) {
+        .card-content form > div:first-child {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
   </body>
 </html>

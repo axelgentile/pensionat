@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sök lediga rum - BookMe</title>
+    <title>Skapa ny bokning - BookMe</title>
     <link rel="stylesheet" th:href="@{/css/main.css}" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -45,7 +45,7 @@
             <div class="nav-section-title">Verktyg</div>
             <a href="/bookings/search" class="nav-item active">
               <span class="icon"><i class="fas fa-search"></i></span>
-              <span>Sök lediga rum</span>
+              <span>Skapa ny bokning</span>
             </a>
             <a href="/bookings/new" class="nav-item">
               <span class="icon"><i class="fas fa-plus-circle"></i></span>
@@ -67,7 +67,7 @@
               class="fas fa-search"
               style="margin-right: 0.5rem; color: #3b82f6"
             ></i>
-            Sök lediga rum
+            Skapa ny bokning
           </h1>
           <p class="page-subtitle">Hitta tillgängliga rum för dina gäster</p>
         </div>
@@ -169,86 +169,6 @@
                 </a>
               </div>
             </form>
-          </div>
-        </div>
-
-        <!-- Search Tips -->
-        <div class="card">
-          <div class="card-header">
-            <h2 class="card-title">Söktips</h2>
-          </div>
-          <div class="card-content">
-            <div
-              style="
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 1rem;
-              "
-            >
-              <div style="display: flex; align-items: start; gap: 0.75rem">
-                <i
-                  class="fas fa-lightbulb"
-                  style="color: #f59e0b; margin-top: 0.25rem"
-                ></i>
-                <div>
-                  <h3
-                    style="
-                      color: #1e293b;
-                      margin-bottom: 0.25rem;
-                      font-size: 0.875rem;
-                      font-weight: 600;
-                    "
-                  >
-                    Välj rätt datum
-                  </h3>
-                  <p style="color: #64748b; font-size: 0.75rem">
-                    Check-out datum måste vara efter check-in datum.
-                  </p>
-                </div>
-              </div>
-              <div style="display: flex; align-items: start; gap: 0.75rem">
-                <i
-                  class="fas fa-info-circle"
-                  style="color: #3b82f6; margin-top: 0.25rem"
-                ></i>
-                <div>
-                  <h3
-                    style="
-                      color: #1e293b;
-                      margin-bottom: 0.25rem;
-                      font-size: 0.875rem;
-                      font-weight: 600;
-                    "
-                  >
-                    Antal gäster
-                  </h3>
-                  <p style="color: #64748b; font-size: 0.75rem">
-                    Ange det totala antalet gäster som ska bo på rummet.
-                  </p>
-                </div>
-              </div>
-              <div style="display: flex; align-items: start; gap: 0.75rem">
-                <i
-                  class="fas fa-clock"
-                  style="color: #10b981; margin-top: 0.25rem"
-                ></i>
-                <div>
-                  <h3
-                    style="
-                      color: #1e293b;
-                      margin-bottom: 0.25rem;
-                      font-size: 0.875rem;
-                      font-weight: 600;
-                    "
-                  >
-                    Snabb sökning
-                  </h3>
-                  <p style="color: #64748b; font-size: 0.75rem">
-                    Resultatet visas direkt efter att du klickat på sök.
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </main>
