@@ -121,6 +121,12 @@
                     min="1"
                     required
                   />
+                  <div
+                    th:if="${#fields.hasErrors('roomNumber')}"
+                    class="error-message"
+                  >
+                    <span th:errors="*{roomNumber}"></span>
+                  </div>
                 </div>
 
                 <div class="form-group">
@@ -141,27 +147,70 @@
                     <option value="SINGLE">Enkelrum</option>
                     <option value="DOUBLE">Dubbelrum</option>
                   </select>
+                  <div
+                    th:if="${#fields.hasErrors('roomType')}"
+                    class="error-message"
+                  >
+                    <span th:errors="*{roomType}"></span>
+                  </div>
                 </div>
               </div>
 
-              <div class="form-group">
-                <label for="pricePerNight" class="form-label">
-                  <i
-                    class="fas fa-money-bill-wave"
-                    style="margin-right: 0.5rem"
-                  ></i>
-                  Pris per natt (SEK)
-                </label>
-                <input
-                  type="number"
-                  id="pricePerNight"
-                  th:field="*{pricePerNight}"
-                  class="form-input"
-                  placeholder="t.ex. 750"
-                  min="0"
-                  step="50"
-                  required
-                />
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: 1fr 1fr;
+                  gap: 1.5rem;
+                "
+              >
+                <div class="form-group">
+                  <label for="pricePerNight" class="form-label">
+                    <i
+                      class="fas fa-money-bill-wave"
+                      style="margin-right: 0.5rem"
+                    ></i>
+                    Pris per natt (SEK)
+                  </label>
+                  <input
+                    type="number"
+                    id="pricePerNight"
+                    th:field="*{pricePerNight}"
+                    class="form-input"
+                    placeholder="t.ex. 750"
+                    min="0"
+                    step="50"
+                    required
+                  />
+                  <div
+                    th:if="${#fields.hasErrors('pricePerNight')}"
+                    class="error-message"
+                  >
+                    <span th:errors="*{pricePerNight}"></span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="extraBeds" class="form-label">
+                    <i class="fas fa-bed" style="margin-right: 0.5rem"></i>
+                    Antal extra sängar
+                  </label>
+                  <input
+                    type="number"
+                    id="extraBeds"
+                    th:field="*{extraBeds}"
+                    class="form-input"
+                    placeholder="0"
+                    min="0"
+                    max="2"
+                    required
+                  />
+                  <div
+                    th:if="${#fields.hasErrors('extraBeds')}"
+                    class="error-message"
+                  >
+                    <span th:errors="*{extraBeds}"></span>
+                  </div>
+                </div>
               </div>
 
               <div style="display: flex; gap: 1rem; margin-top: 2rem">
@@ -266,6 +315,17 @@
       .form-select {
         background-color: white;
         cursor: pointer;
+      }
+
+      .error-message {
+        margin-top: 0.25rem;
+        font-size: 0.75rem;
+        color: #dc2626;
+      }
+
+      .form-input.error,
+      .form-select.error {
+        border-color: #dc2626;
       }
 
       @media (max-width: 768px) {

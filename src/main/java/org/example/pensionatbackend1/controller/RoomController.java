@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.validation.BindingResult;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -34,7 +36,16 @@ public class RoomController {
     }
 
     @PostMapping("/create")
-    public String createRoom(@ModelAttribute("roomDto")RoomDto roomDto, RedirectAttributes redirectAttributes) {
+    public String createRoom(@Valid @ModelAttribute("roomDto") RoomDto roomDto,
+            BindingResult bindingResult,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("roomDto", roomDto);
+            return "room-form";
+        }
+
         try {
             Room room = RoomMapper.toEntity(roomDto);
             roomService.createRoom(room);
@@ -45,6 +56,7 @@ public class RoomController {
             return "redirect:/rooms/create";
         }
     }
+
     @PostMapping("/delete/{id}")
     public String deleteRoom(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         if (roomService.getRoomById(id) == null) {

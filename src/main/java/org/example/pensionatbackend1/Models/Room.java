@@ -1,6 +1,5 @@
 package org.example.pensionatbackend1.Models;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -28,21 +27,17 @@ public class Room {
     private Long id;
     private Integer roomNumber;
     private RoomType roomType;
-    private double pricePerNight;
-    private int extraBeds;
+    private Double pricePerNight;
+    private Integer extraBeds;
 
     @OneToMany(mappedBy = "room")
     private List<Booking> bookings;
 
-    public Room(Long id, Integer roomNumber, RoomType roomType, double pricePerNight, int extraBeds) {
+    public Room(Long id, Integer roomNumber, RoomType roomType, Double pricePerNight, Integer extraBeds) {
         this.id = id;
         this.roomNumber = roomNumber;
         this.roomType = roomType;
         this.pricePerNight = pricePerNight;
         this.extraBeds = extraBeds;
     }
-
-    @OneToMany(mappedBy = "room")
-    private List<Booking> bookingsList;
-
 }
