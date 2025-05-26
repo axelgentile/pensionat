@@ -1,6 +1,9 @@
 package org.example.pensionatbackend1.Models;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,5 +25,14 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer")
     private List<Booking> bookings;
+
+    public Customer(Long id, String firstName, String lastName, String email, String phoneNumber) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNum = phoneNumber;
+    }
+
 
 }

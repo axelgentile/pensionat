@@ -19,6 +19,10 @@ public class RoomService{
     public List<Room> getAllRooms(){
         return roomRepository.findAll();
     }
+    public Room getRoomById(Long id){
+        return roomRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Rummet finns inte."));
+    }
 
     public void validateRoomNumber(Room room){
         Room existingRoom = roomRepository.findByRoomNumber(room.getRoomNumber());
@@ -42,8 +46,16 @@ public class RoomService{
     public void createRoom(Room room){
         validateBeds(room);
         validateRoomNumber(room);
+
+        if (room.getRoomType() == RoomType.SINGLE) {
+            room.setExtraBeds(0);
+        } else if (room.getRoomType() == RoomType.DOUBLE) {
+            room.setExtraBeds(2);
+        }
+
         roomRepository.save(room);
     }
+
     public void deleteRoomById(Long id){
         roomRepository.deleteById(id);
     }

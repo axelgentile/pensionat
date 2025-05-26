@@ -1,11 +1,33 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="sv">
 <head>
+    <link rel="stylesheet" href="/css/style.css" />
     <meta charset="UTF-8" />
     <title>Alla Bokningar</title>
 </head>
 <body>
+
+<div class="sidebar">
+    <h2>BookMe</h2>
+    <a th:href="@{/customers/all}">Kunder</a>
+    <a th:href="@{/rooms/all}">Rum</a>
+    <a th:href="@{/bookings/all}">Bokningar</a>
+</div>
 <h1>Alla bokningar</h1>
+
+<div th:if="${successMessage}" style="color: green; font-weight: bold; text-align: center; margin-bottom: 1em;">
+    <p th:text="${successMessage}">Bokningen lyckades!</p>
+</div>
+<div th:if="${bookingmessage}" style="color: red; font-weight: bold; margin-bottom: 1em; text-align: center;">
+    <p th:text="${bookingmessage}">Bokningen avbröts!</p>
+</div>
+
+<div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px;">
+    <form th:action="@{/bookings/new}" method="get">
+        <button type="submit">Skapa ny bokning</button>
+    </form>
+</div>
+
 
 <table border="1">
     <thead>
@@ -16,16 +38,25 @@
         <th>Rum</th>
         <th>Check-in</th>
         <th>Check-out</th>
+        <th>Åtgärder</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="booking : ${bookings}">
         <td th:text="${booking.id}">ID</td>
-        <td th:text="${booking.customer.firstName}">Förnamn</td>
-        <td th:text="${booking.customer.lastName}">Efternamn</td>
-        <td th:text="${booking.room.roomNumber}">Rumsnummer</td>
+        <td th:text="${booking.customerFirstName}">Förnamn</td>
+        <td th:text="${booking.customerLastName}">Efternamn</td>
+        <td th:text="${booking.roomNumber}">Rumsnummer</td>
         <td th:text="${booking.checkInDate}">Check-in</td>
         <td th:text="${booking.checkOutDate}">Check-out</td>
+        <td>
+            <form th:action="@{'/bookings/delete/' + ${booking.id}}" method="post" style="display:inline">
+                <button type="submit" onclick="return confirm('Vill du avboka denna bokning?')">Avboka</button>
+            </form>
+            <form th:action="@{'/bookings/edit/' + ${booking.id}}" method="get" style="display:inline;">
+                <button type="submit">Uppdatera</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>

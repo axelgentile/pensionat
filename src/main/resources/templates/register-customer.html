@@ -2,23 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Registrera Kund</title>
-    <style>
-        label {
-            display: block;
-            margin-top: 10px;
-        }
-        input, button {
-            margin-top: 5px;
-            padding: 5px;
-            width: 300px;
-        }
-        .error {
-            color: red;
-            font-size: 0.9em;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body>
+
+<div class="sidebar">
+    <h2>BookMe</h2>
+    <a th:href="@{/customers/all}">Kunder</a>
+    <a th:href="@{/rooms/all}">Rum</a>
+    <a th:href="@{/bookings/all}">Bokningar</a>
+</div>
 
 <h1>Registrera Kund</h1>
 

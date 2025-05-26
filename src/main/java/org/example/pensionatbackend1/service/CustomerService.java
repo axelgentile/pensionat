@@ -32,6 +32,7 @@ public class CustomerService {
     public void createCustomer(Customer customer) {
         repository.save(customer);
     }
+
     public void deleteCustomerById(Long id){
         boolean hasBooking = bookingRepository.existsByCustomerId(id);
         if (hasBooking){

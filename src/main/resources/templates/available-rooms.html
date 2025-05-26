@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="sv">
+<head>
+    <link rel="stylesheet" href="/css/style.css" />
+    <meta charset="UTF-8">
+    <title>Lediga rum</title>
+
+
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>BookMe</h2>
+    <a th:href="@{/customers/all}">Kunder</a>
+    <a th:href="@{/rooms/all}">Rum</a>
+    <a th:href="@{/bookings/all}">Bokningar</a>
+</div>
+
+<div class="main-content">
+<h1>Boka ett rum</h1>
+
+<div th:if="${errorMessage}" style="color: red; text-align: center; margin-bottom: 1em; font-weight: bold">
+    <p th:text="${errorMessage}"></p>
+</div>
+
+<div th:if="${successMessage}" style="color: green;">
+    <p th:text="${successMessage}"></p>
+</div>
+
+<form id="bookingForm" th:action="@{/bookings/book}" method="post">
+    <h2>Välj kund</h2>
+    <label for="customerId">Kund:</label>
+    <select id="customerId" name="customerId" required>
+        <option value="" disabled selected>-- Välj kund --</option>
+        <option th:each="customer : ${customers}"
+                th:value="${customer.id}"
+                th:text="${customer.firstName + ' ' + customer.lastName}">
+        </option>
+    </select>
+
+    <input type="hidden" name="checkInDate" th:value="${checkIn}" />
+    <input type="hidden" name="checkOutDate" th:value="${checkOut}" />
+    <input type="hidden" name="guests" th:value="${guests}" />
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Rum</th>
+            <th>Typ</th>
+            <th>Pris</th>
+            <th>Boka</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="room : ${availableRooms}">
+            <td th:text="${room.roomNumber}">101</td>
+            <td th:text="${room.roomType}">DUBBEL</td>
+            <td th:text="${room.pricePerNight} + ' kr'">1000</td>
+            <td>
+                <button type="submit" name="roomId" th:value="${room.id}" disabled>Boka</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+</div>
+
+<script>
+    const customerSelect = document.getElementById('customerId');
+    const bookButtons = document.querySelectorAll('button[name="roomId"]');
+
+    customerSelect.addEventListener('change', () => {
+        const selected = customerSelect.value !== "";
+        bookButtons.forEach(btn => btn.disabled = !selected);
+    });
+</script>
+
+</body>
+</html>

@@ -3,22 +3,15 @@
 <head>
     <title>Skapa nytt rum</title>
 </head>
-<style>
-    label {
-        display: block;
-        margin-top: 10px;
-    }
-    input, button {
-        margin-top: 5px;
-        padding: 5px;
-        width: 300px;
-    }
-    .error {
-        color: red;
-        font-size: 0.9em;
-    }
-</style>
+<link rel="stylesheet" href="/css/style.css" />
 <body>
+
+<div class="sidebar">
+    <h2>BookMe</h2>
+    <a th:href="@{/customers/all}">Kunder</a>
+    <a th:href="@{/rooms/all}">Rum</a>
+    <a th:href="@{/bookings/all}">Bokningar</a>
+</div>
 
 <h1>Skapa nytt rum</h1>
 
@@ -34,9 +27,6 @@
 
     <label>Pris per natt:</label>
     <input type="number" th:field="*{pricePerNight}" required /><br>
-
-    <label>Extrasängar:</label>
-    <input type="number" th:field="*{extraBeds}" /><br>
 
     <button type="submit">Skapa rum</button>
 </form>
