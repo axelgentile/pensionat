@@ -1,38 +1,298 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Skapa nytt rum</title>
-</head>
-<link rel="stylesheet" href="/css/style.css" />
-<body>
+<html xmlns:th="http://www.thymeleaf.org" lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Skapa nytt rum - BookMe</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/c4cbc11728.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="logo-container">
+          <div class="logo">BookMe</div>
+          <div class="logo-subtitle">Hotellbokningssystem</div>
+        </div>
 
-<div class="sidebar">
-    <h2>BookMe</h2>
-    <a th:href="@{/customers/all}">Kunder</a>
-    <a th:href="@{/rooms/all}">Rum</a>
-    <a th:href="@{/bookings/all}">Bokningar</a>
-</div>
+        <nav class="nav-menu">
+          <div class="nav-section">
+            <div class="nav-section-title">Huvudmeny</div>
+            <a href="/bookings/all" class="nav-item">
+              <span class="icon"><i class="fas fa-calendar-check"></i></span>
+              <span>Bokningar</span>
+            </a>
+            <a href="/customers/all" class="nav-item">
+              <span class="icon"><i class="fas fa-users"></i></span>
+              <span>Kunder</span>
+            </a>
+            <a href="/rooms/all" class="nav-item active">
+              <span class="icon"><i class="fas fa-bed"></i></span>
+              <span>Rum</span>
+            </a>
+          </div>
 
-<h1>Skapa nytt rum</h1>
+          <div class="nav-section">
+            <div class="nav-section-title">Verktyg</div>
+            <a href="/bookings/search" class="nav-item">
+              <span class="icon"><i class="fas fa-search"></i></span>
+              <span>Sök lediga rum</span>
+            </a>
+            <a href="/bookings/new" class="nav-item">
+              <span class="icon"><i class="fas fa-plus-circle"></i></span>
+              <span>Ny bokning</span>
+            </a>
+            <a href="/customers/register" class="nav-item">
+              <span class="icon"><i class="fas fa-user-plus"></i></span>
+              <span>Registrera kund</span>
+            </a>
+          </div>
+        </nav>
+      </div>
 
-<form th:action="@{/rooms/create}" th:object="${roomDto}" method="post">
-    <label>Rumsnummer:</label>
-    <input type="number" th:field="*{roomNumber}" required /><br>
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="page-header">
+          <h1 class="page-title">
+            <i
+              class="fas fa-plus-circle"
+              style="margin-right: 0.5rem; color: #3b82f6"
+            ></i>
+            Skapa nytt rum
+          </h1>
+          <p class="page-subtitle">Lägg till ett nytt rum i hotellet</p>
+        </div>
 
-    <label>Rumstyp:</label>
-    <select th:field="*{roomType}">
-        <option value="SINGLE">Enkelrum</option>
-        <option value="DOUBLE">Dubbelrum</option>
-    </select><br>
+        <!-- Back Button -->
+        <div class="page-actions">
+          <a th:href="@{/rooms/all}" class="btn btn-outline">
+            <i class="fas fa-arrow-left"></i>
+            Tillbaka till rum
+          </a>
+        </div>
 
-    <label>Pris per natt:</label>
-    <input type="number" th:field="*{pricePerNight}" required /><br>
+        <!-- Error Message -->
+        <div th:if="${errormessage}" class="message message-error">
+          <i
+            class="fas fa-exclamation-triangle"
+            style="margin-right: 0.5rem"
+          ></i>
+          <span th:text="${errormessage}"></span>
+        </div>
 
-    <button type="submit">Skapa rum</button>
-</form>
-<div th:if="${errormessage}" style="color: red;">
-    <p th:text="${errormessage}"></p>
-</div>
+        <!-- Room Form -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Rumsinformation</h2>
+          </div>
+          <div class="card-content">
+            <form
+              th:action="@{/rooms/create}"
+              th:object="${roomDto}"
+              method="post"
+            >
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: 1fr 1fr;
+                  gap: 1.5rem;
+                "
+              >
+                <div class="form-group">
+                  <label for="roomNumber" class="form-label">
+                    <i class="fas fa-hashtag" style="margin-right: 0.5rem"></i>
+                    Rumsnummer
+                  </label>
+                  <input
+                    type="number"
+                    id="roomNumber"
+                    th:field="*{roomNumber}"
+                    class="form-input"
+                    placeholder="t.ex. 101"
+                    min="1"
+                    required
+                  />
+                </div>
 
-</body>
+                <div class="form-group">
+                  <label for="roomType" class="form-label">
+                    <i
+                      class="fas fa-door-open"
+                      style="margin-right: 0.5rem"
+                    ></i>
+                    Rumstyp
+                  </label>
+                  <select
+                    id="roomType"
+                    th:field="*{roomType}"
+                    class="form-select"
+                    required
+                  >
+                    <option value="">Välj rumstyp</option>
+                    <option value="SINGLE">Enkelrum</option>
+                    <option value="DOUBLE">Dubbelrum</option>
+                    <option value="SUITE">Svit</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="pricePerNight" class="form-label">
+                  <i
+                    class="fas fa-money-bill-wave"
+                    style="margin-right: 0.5rem"
+                  ></i>
+                  Pris per natt (SEK)
+                </label>
+                <input
+                  type="number"
+                  id="pricePerNight"
+                  th:field="*{pricePerNight}"
+                  class="form-input"
+                  placeholder="t.ex. 750"
+                  min="0"
+                  step="50"
+                  required
+                />
+              </div>
+
+              <div style="display: flex; gap: 1rem; margin-top: 2rem">
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-save"></i>
+                  Skapa rum
+                </button>
+                <a th:href="@{/rooms/all}" class="btn btn-secondary">
+                  <i class="fas fa-times"></i>
+                  Avbryt
+                </a>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Room Type Info -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Rumstypsinformation</h2>
+          </div>
+          <div class="card-content">
+            <div
+              style="
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1rem;
+              "
+            >
+              <div
+                style="
+                  padding: 1rem;
+                  border: 1px solid #e2e8f0;
+                  border-radius: 8px;
+                "
+              >
+                <h3 style="color: #1e293b; margin-bottom: 0.5rem">
+                  <i
+                    class="fas fa-bed"
+                    style="color: #3b82f6; margin-right: 0.5rem"
+                  ></i>
+                  Enkelrum
+                </h3>
+                <p style="color: #64748b; font-size: 0.875rem">
+                  Rum för en person med en enkelsäng.
+                </p>
+              </div>
+              <div
+                style="
+                  padding: 1rem;
+                  border: 1px solid #e2e8f0;
+                  border-radius: 8px;
+                "
+              >
+                <h3 style="color: #1e293b; margin-bottom: 0.5rem">
+                  <i
+                    class="fas fa-bed"
+                    style="color: #10b981; margin-right: 0.5rem"
+                  ></i>
+                  Dubbelrum
+                </h3>
+                <p style="color: #64748b; font-size: 0.875rem">
+                  Rum för två personer med dubbelsäng eller två enkelsängar.
+                </p>
+              </div>
+              <div
+                style="
+                  padding: 1rem;
+                  border: 1px solid #e2e8f0;
+                  border-radius: 8px;
+                "
+              >
+                <h3 style="color: #1e293b; margin-bottom: 0.5rem">
+                  <i
+                    class="fas fa-crown"
+                    style="color: #8b5cf6; margin-right: 0.5rem"
+                  ></i>
+                  Svit
+                </h3>
+                <p style="color: #64748b; font-size: 0.875rem">
+                  Lyxigt rum med separat vardagsrum och sovrum.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <style>
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #374151;
+        margin-bottom: 0.5rem;
+      }
+
+      .form-input,
+      .form-select {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .form-input:focus,
+      .form-select:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+
+      .form-select {
+        background-color: white;
+        cursor: pointer;
+      }
+
+      @media (max-width: 768px) {
+        .card-content form > div:first-child {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </body>
 </html>

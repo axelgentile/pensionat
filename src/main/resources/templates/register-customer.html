@@ -1,49 +1,234 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Registrera Kund</title>
-    <link rel="stylesheet" href="/css/style.css" />
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org" lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registrera kund - BookMe</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/c4cbc11728.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="logo-container">
+          <div class="logo">BookMe</div>
+          <div class="logo-subtitle">Hotellbokningssystem</div>
+        </div>
 
-<div class="sidebar">
-    <h2>BookMe</h2>
-    <a th:href="@{/customers/all}">Kunder</a>
-    <a th:href="@{/rooms/all}">Rum</a>
-    <a th:href="@{/bookings/all}">Bokningar</a>
-</div>
+        <nav class="nav-menu">
+          <div class="nav-section">
+            <div class="nav-section-title">Huvudmeny</div>
+            <a href="/bookings/all" class="nav-item">
+              <span class="icon"><i class="fas fa-calendar-check"></i></span>
+              <span>Bokningar</span>
+            </a>
+            <a href="/customers/all" class="nav-item">
+              <span class="icon"><i class="fas fa-users"></i></span>
+              <span>Kunder</span>
+            </a>
+            <a href="/rooms/all" class="nav-item">
+              <span class="icon"><i class="fas fa-bed"></i></span>
+              <span>Rum</span>
+            </a>
+          </div>
 
-<h1>Registrera Kund</h1>
+          <div class="nav-section">
+            <div class="nav-section-title">Verktyg</div>
+            <a href="/bookings/search" class="nav-item">
+              <span class="icon"><i class="fas fa-search"></i></span>
+              <span>Sök lediga rum</span>
+            </a>
+            <a href="/bookings/new" class="nav-item">
+              <span class="icon"><i class="fas fa-plus-circle"></i></span>
+              <span>Ny bokning</span>
+            </a>
+            <a href="/customers/register" class="nav-item active">
+              <span class="icon"><i class="fas fa-user-plus"></i></span>
+              <span>Registrera kund</span>
+            </a>
+          </div>
+        </nav>
+      </div>
 
-<form th:action="@{/customers/register}" th:object="${customerDto}" method="post">
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="page-header">
+          <h1 class="page-title">
+            <i
+              class="fas fa-user-plus"
+              style="margin-right: 0.5rem; color: #3b82f6"
+            ></i>
+            Registrera ny kund
+          </h1>
+          <p class="page-subtitle">Lägg till en ny kund i systemet</p>
+        </div>
 
-    <label for="firstName">Förnamn:</label>
-    <input type="text" id="firstName" th:field="*{firstName}" />
-    <div class="error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+        <!-- Back Button -->
+        <div class="page-actions">
+          <a th:href="@{/customers/all}" class="btn btn-outline">
+            <i class="fas fa-arrow-left"></i>
+            Tillbaka till kunder
+          </a>
+        </div>
 
-    <label for="lastName">Efternamn:</label>
-    <input type="text" id="lastName" th:field="*{lastName}" />
-    <div class="error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+        <!-- Registration Form -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Kundinformation</h2>
+          </div>
+          <div class="card-content">
+            <form
+              th:action="@{/customers/register}"
+              th:object="${customerDto}"
+              method="post"
+            >
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: 1fr 1fr;
+                  gap: 1.5rem;
+                "
+              >
+                <div class="form-group">
+                  <label for="firstName" class="form-label">
+                    <i class="fas fa-user" style="margin-right: 0.5rem"></i>
+                    Förnamn
+                  </label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    th:field="*{firstName}"
+                    class="form-input"
+                    placeholder="Ange förnamn"
+                    required
+                  />
+                  <div
+                    class="message message-error"
+                    th:if="${#fields.hasErrors('firstName')}"
+                    th:errors="*{firstName}"
+                  ></div>
+                </div>
 
-    <label for="email">E-post:</label>
-    <input type="email" id="email" th:field="*{email}" />
-    <div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                <div class="form-group">
+                  <label for="lastName" class="form-label">
+                    <i class="fas fa-user" style="margin-right: 0.5rem"></i>
+                    Efternamn
+                  </label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    th:field="*{lastName}"
+                    class="form-input"
+                    placeholder="Ange efternamn"
+                    required
+                  />
+                  <div
+                    class="message message-error"
+                    th:if="${#fields.hasErrors('lastName')}"
+                    th:errors="*{lastName}"
+                  ></div>
+                </div>
+              </div>
 
-    <label for="phoneNum">Telefonnummer:</label>
-    <input type="text" id="phoneNum" th:field="*{phoneNum}" />
-    <div class="error" th:if="${#fields.hasErrors('phoneNum')}" th:errors="*{phoneNum}"></div>
-    <br>
-    <br>
+              <div class="form-group">
+                <label for="email" class="form-label">
+                  <i class="fas fa-envelope" style="margin-right: 0.5rem"></i>
+                  E-postadress
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  th:field="*{email}"
+                  class="form-input"
+                  placeholder="exempel@email.com"
+                  required
+                />
+                <div
+                  class="message message-error"
+                  th:if="${#fields.hasErrors('email')}"
+                  th:errors="*{email}"
+                ></div>
+              </div>
 
-    <button type="submit">Registrera</button>
+              <div class="form-group">
+                <label for="phoneNum" class="form-label">
+                  <i class="fas fa-phone" style="margin-right: 0.5rem"></i>
+                  Telefonnummer
+                </label>
+                <input
+                  type="tel"
+                  id="phoneNum"
+                  th:field="*{phoneNum}"
+                  class="form-input"
+                  placeholder="070-123 45 67"
+                  required
+                />
+                <div
+                  class="message message-error"
+                  th:if="${#fields.hasErrors('phoneNum')}"
+                  th:errors="*{phoneNum}"
+                ></div>
+              </div>
 
-</form>
-<br>
-<form th:action="@{/customers/all}" method="get">
-    <button type="submit" style="padding: 2px 4px; font-size: 12px;">&larr; Gå tillbaka</button>
-</form>
+              <div style="display: flex; gap: 1rem; margin-top: 2rem">
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-save"></i>
+                  Registrera kund
+                </button>
+                <a th:href="@{/customers/all}" class="btn btn-secondary">
+                  <i class="fas fa-times"></i>
+                  Avbryt
+                </a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
 
+    <style>
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
 
+      .form-label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #374151;
+        margin-bottom: 0.5rem;
+      }
 
-</body>
+      .form-input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .form-input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+
+      @media (max-width: 768px) {
+        .card-content form > div:first-child {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </body>
 </html>

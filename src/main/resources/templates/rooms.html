@@ -1,59 +1,226 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Alla rum</title>
-    <link rel="stylesheet" href="/css/style.css" />
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org" lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alla rum - BookMe</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/c4cbc11728.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="logo-container">
+          <div class="logo">BookMe</div>
+          <div class="logo-subtitle">Hotellbokningssystem</div>
+        </div>
 
-<div class="sidebar">
-    <h2>BookMe</h2>
-    <a th:href="@{/customers/all}">Kunder</a>
-    <a th:href="@{/rooms/all}">Rum</a>
-    <a th:href="@{/bookings/all}">Bokningar</a>
-</div>
+        <nav class="nav-menu">
+          <div class="nav-section">
+            <div class="nav-section-title">Huvudmeny</div>
+            <a href="/bookings/all" class="nav-item">
+              <span class="icon"><i class="fas fa-calendar-check"></i></span>
+              <span>Bokningar</span>
+            </a>
+            <a href="/customers/all" class="nav-item">
+              <span class="icon"><i class="fas fa-users"></i></span>
+              <span>Kunder</span>
+            </a>
+            <a href="/rooms/all" class="nav-item active">
+              <span class="icon"><i class="fas fa-bed"></i></span>
+              <span>Rum</span>
+            </a>
+          </div>
 
+          <div class="nav-section">
+            <div class="nav-section-title">Verktyg</div>
+            <a href="/bookings/search" class="nav-item">
+              <span class="icon"><i class="fas fa-search"></i></span>
+              <span>Sök lediga rum</span>
+            </a>
+            <a href="/bookings/new" class="nav-item">
+              <span class="icon"><i class="fas fa-plus-circle"></i></span>
+              <span>Ny bokning</span>
+            </a>
+            <a href="/customers/register" class="nav-item">
+              <span class="icon"><i class="fas fa-user-plus"></i></span>
+              <span>Registrera kund</span>
+            </a>
+          </div>
+        </nav>
+      </div>
 
-<h1>Alla rum</h1>
-<div th:if="${successMessage}" style="color: green; text-align: center; margin-bottom: 1em; font-weight: bold;">
-    <p th:text="${successMessage}"></p>
-</div>
-<div th:if="${deleteMessage}" style="color: red; text-align: center; margin-bottom: 1em; font-weight: bold;">
-    <p th:text="${deleteMessage}"></p>
-</div>
-<div th:if="${errorMessage}" style="color: red; text-align: center; margin-bottom: 1em; font-weight: bold;">
-    <p th:text="${errorMessage}"></p>
-</div>
-<div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px;">
-    <form th:action="@{/rooms/create}" method="get">
-        <button type="submit">Skapa nytt rum</button>
-    </form>
-</div>
-<table>
-    <thead>
-    <tr>
-        <th>Rumsnummer</th>
-        <th>Rumstyp</th>
-        <th>Pris per natt</th>
-        <th>Redigera rum</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="room : ${rooms}">
-        <td th:text="${room.roomNumber}">101</td>
-        <td th:text="${room.roomType}">SINGLE</td>
-        <td th:text="${room.pricePerNight} + ' kr'">750</td>
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="page-header">
+          <h1 class="page-title">
+            <i
+              class="fas fa-bed"
+              style="margin-right: 0.5rem; color: #3b82f6"
+            ></i>
+            Alla rum
+          </h1>
+          <p class="page-subtitle">Hantera och övervaka alla hotellrum</p>
+        </div>
 
-        <td>
-            <form th:action="@{/rooms/delete/{id}(id=${room.id})}" method="post"
-                  onsubmit="return confirm('Är du säker på att du vill ta bort detta rum?');">
-                <button type="submit">Ta bort</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+        <!-- Messages -->
+        <div th:if="${successMessage}" class="message message-success">
+          <i class="fas fa-check-circle" style="margin-right: 0.5rem"></i>
+          <span th:text="${successMessage}"></span>
+        </div>
+        <div th:if="${deleteMessage}" class="message message-error">
+          <i
+            class="fas fa-exclamation-triangle"
+            style="margin-right: 0.5rem"
+          ></i>
+          <span th:text="${deleteMessage}"></span>
+        </div>
+        <div th:if="${errorMessage}" class="message message-error">
+          <i class="fas fa-times-circle" style="margin-right: 0.5rem"></i>
+          <span th:text="${errorMessage}"></span>
+        </div>
 
-</body>
+        <!-- Page Actions -->
+        <div class="page-actions">
+          <a th:href="@{/rooms/create}" class="btn btn-primary">
+            <i class="fas fa-plus"></i>
+            Skapa nytt rum
+          </a>
+        </div>
+
+        <!-- Rooms Table -->
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  <i class="fas fa-hashtag" style="margin-right: 0.5rem"></i>
+                  Rumsnummer
+                </th>
+                <th>
+                  <i class="fas fa-door-open" style="margin-right: 0.5rem"></i>
+                  Rumstyp
+                </th>
+                <th>
+                  <i
+                    class="fas fa-money-bill-wave"
+                    style="margin-right: 0.5rem"
+                  ></i>
+                  Pris per natt
+                </th>
+                <th>
+                  <i class="fas fa-cogs" style="margin-right: 0.5rem"></i>
+                  Åtgärder
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="room : ${rooms}" class="fade-in">
+                <td>
+                  <span
+                    style="font-weight: 600; color: #1e293b"
+                    th:text="${room.roomNumber}"
+                    >101</span
+                  >
+                </td>
+                <td>
+                  <span
+                    class="badge"
+                    th:classappend="${room.roomType == 'SINGLE'} ? 'badge-blue' : (${room.roomType == 'DOUBLE'} ? 'badge-green' : 'badge-purple')"
+                    th:text="${room.roomType}"
+                    >SINGLE</span
+                  >
+                </td>
+                <td>
+                  <span
+                    style="font-weight: 500; color: #059669"
+                    th:text="${room.pricePerNight} + ' kr'"
+                    >750 kr</span
+                  >
+                </td>
+                <td>
+                  <div class="action-buttons">
+                    <form
+                      th:action="@{/rooms/delete/{id}(id=${room.id})}"
+                      method="post"
+                      onsubmit="return confirm('Är du säker på att du vill ta bort detta rum?');"
+                      style="display: inline"
+                    >
+                      <button type="submit" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash"></i>
+                        Ta bort
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+              <tr th:if="${#lists.isEmpty(rooms)}">
+                <td
+                  colspan="4"
+                  style="text-align: center; padding: 3rem; color: #64748b"
+                >
+                  <i
+                    class="fas fa-bed"
+                    style="
+                      font-size: 3rem;
+                      margin-bottom: 1rem;
+                      display: block;
+                      opacity: 0.3;
+                    "
+                  ></i>
+                  <div
+                    style="
+                      font-size: 1.125rem;
+                      font-weight: 500;
+                      margin-bottom: 0.5rem;
+                    "
+                  >
+                    Inga rum hittades
+                  </div>
+                  <div>Skapa ditt första rum för att komma igång</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+
+    <style>
+      .badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        border-radius: 9999px;
+        text-transform: uppercase;
+        letter-spacing: 0.025em;
+      }
+
+      .badge-blue {
+        background-color: #dbeafe;
+        color: #1e40af;
+      }
+
+      .badge-green {
+        background-color: #d1fae5;
+        color: #065f46;
+      }
+
+      .badge-purple {
+        background-color: #e9d5ff;
+        color: #7c3aed;
+      }
+    </style>
+  </body>
 </html>
-

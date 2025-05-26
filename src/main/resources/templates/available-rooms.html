@@ -1,79 +1,398 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="sv">
-<head>
-    <link rel="stylesheet" href="/css/style.css" />
-    <meta charset="UTF-8">
-    <title>Lediga rum</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lediga rum - BookMe</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/c4cbc11728.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="logo-container">
+          <div class="logo">BookMe</div>
+          <div class="logo-subtitle">Hotellbokningssystem</div>
+        </div>
 
+        <nav class="nav-menu">
+          <div class="nav-section">
+            <div class="nav-section-title">Huvudmeny</div>
+            <a href="/bookings/all" class="nav-item">
+              <span class="icon"><i class="fas fa-calendar-check"></i></span>
+              <span>Bokningar</span>
+            </a>
+            <a href="/customers/all" class="nav-item">
+              <span class="icon"><i class="fas fa-users"></i></span>
+              <span>Kunder</span>
+            </a>
+            <a href="/rooms/all" class="nav-item">
+              <span class="icon"><i class="fas fa-bed"></i></span>
+              <span>Rum</span>
+            </a>
+          </div>
 
-</head>
-<body>
+          <div class="nav-section">
+            <div class="nav-section-title">Verktyg</div>
+            <a href="/bookings/search" class="nav-item active">
+              <span class="icon"><i class="fas fa-search"></i></span>
+              <span>Sök lediga rum</span>
+            </a>
+            <a href="/bookings/new" class="nav-item">
+              <span class="icon"><i class="fas fa-plus-circle"></i></span>
+              <span>Ny bokning</span>
+            </a>
+            <a href="/customers/register" class="nav-item">
+              <span class="icon"><i class="fas fa-user-plus"></i></span>
+              <span>Registrera kund</span>
+            </a>
+          </div>
+        </nav>
+      </div>
 
-<div class="sidebar">
-    <h2>BookMe</h2>
-    <a th:href="@{/customers/all}">Kunder</a>
-    <a th:href="@{/rooms/all}">Rum</a>
-    <a th:href="@{/bookings/all}">Bokningar</a>
-</div>
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="page-header">
+          <h1 class="page-title">
+            <i
+              class="fas fa-bed"
+              style="margin-right: 0.5rem; color: #3b82f6"
+            ></i>
+            Lediga rum
+          </h1>
+          <p class="page-subtitle">Välj rum och slutför bokningen</p>
+        </div>
 
-<div class="main-content">
-<h1>Boka ett rum</h1>
+        <!-- Back Button -->
+        <div class="page-actions">
+          <a th:href="@{/bookings/search}" class="btn btn-outline">
+            <i class="fas fa-arrow-left"></i>
+            Tillbaka till sökning
+          </a>
+        </div>
 
-<div th:if="${errorMessage}" style="color: red; text-align: center; margin-bottom: 1em; font-weight: bold">
-    <p th:text="${errorMessage}"></p>
-</div>
+        <!-- Messages -->
+        <div th:if="${errorMessage}" class="message message-error">
+          <i
+            class="fas fa-exclamation-triangle"
+            style="margin-right: 0.5rem"
+          ></i>
+          <span th:text="${errorMessage}"></span>
+        </div>
+        <div th:if="${successMessage}" class="message message-success">
+          <i class="fas fa-check-circle" style="margin-right: 0.5rem"></i>
+          <span th:text="${successMessage}"></span>
+        </div>
 
-<div th:if="${successMessage}" style="color: green;">
-    <p th:text="${successMessage}"></p>
-</div>
+        <!-- Booking Summary -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Bokningsdetaljer</h2>
+          </div>
+          <div class="card-content">
+            <div
+              style="
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1rem;
+              "
+            >
+              <div style="display: flex; align-items: center; gap: 0.5rem">
+                <i class="fas fa-calendar-alt" style="color: #3b82f6"></i>
+                <div>
+                  <div
+                    style="
+                      font-size: 0.75rem;
+                      color: #64748b;
+                      text-transform: uppercase;
+                      font-weight: 600;
+                    "
+                  >
+                    Check-in
+                  </div>
+                  <div style="font-weight: 500" th:text="${checkIn}">
+                    2024-01-15
+                  </div>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem">
+                <i class="fas fa-calendar-alt" style="color: #3b82f6"></i>
+                <div>
+                  <div
+                    style="
+                      font-size: 0.75rem;
+                      color: #64748b;
+                      text-transform: uppercase;
+                      font-weight: 600;
+                    "
+                  >
+                    Check-out
+                  </div>
+                  <div style="font-weight: 500" th:text="${checkOut}">
+                    2024-01-18
+                  </div>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem">
+                <i class="fas fa-users" style="color: #3b82f6"></i>
+                <div>
+                  <div
+                    style="
+                      font-size: 0.75rem;
+                      color: #64748b;
+                      text-transform: uppercase;
+                      font-weight: 600;
+                    "
+                  >
+                    Gäster
+                  </div>
+                  <div style="font-weight: 500" th:text="${guests}">2</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-<form id="bookingForm" th:action="@{/bookings/book}" method="post">
-    <h2>Välj kund</h2>
-    <label for="customerId">Kund:</label>
-    <select id="customerId" name="customerId" required>
-        <option value="" disabled selected>-- Välj kund --</option>
-        <option th:each="customer : ${customers}"
-                th:value="${customer.id}"
-                th:text="${customer.firstName + ' ' + customer.lastName}">
-        </option>
-    </select>
+        <!-- Customer Selection & Room Booking -->
+        <form id="bookingForm" th:action="@{/bookings/book}" method="post">
+          <input type="hidden" name="checkInDate" th:value="${checkIn}" />
+          <input type="hidden" name="checkOutDate" th:value="${checkOut}" />
+          <input type="hidden" name="guests" th:value="${guests}" />
 
-    <input type="hidden" name="checkInDate" th:value="${checkIn}" />
-    <input type="hidden" name="checkOutDate" th:value="${checkOut}" />
-    <input type="hidden" name="guests" th:value="${guests}" />
+          <!-- Customer Selection -->
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Välj kund</h2>
+            </div>
+            <div class="card-content">
+              <div class="form-group">
+                <label for="customerId" class="form-label">
+                  <i class="fas fa-user" style="margin-right: 0.5rem"></i>
+                  Kund
+                </label>
+                <select
+                  id="customerId"
+                  name="customerId"
+                  class="form-select"
+                  required
+                >
+                  <option value="" disabled selected>-- Välj kund --</option>
+                  <option
+                    th:each="customer : ${customers}"
+                    th:value="${customer.id}"
+                    th:text="${customer.firstName + ' ' + customer.lastName}"
+                  ></option>
+                </select>
+                <p
+                  style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem"
+                >
+                  <i
+                    class="fas fa-info-circle"
+                    style="margin-right: 0.25rem"
+                  ></i>
+                  Välj en kund för att aktivera bokningsknapparna
+                </p>
+              </div>
+            </div>
+          </div>
 
-    <table border="1">
-        <thead>
-        <tr>
-            <th>Rum</th>
-            <th>Typ</th>
-            <th>Pris</th>
-            <th>Boka</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="room : ${availableRooms}">
-            <td th:text="${room.roomNumber}">101</td>
-            <td th:text="${room.roomType}">DUBBEL</td>
-            <td th:text="${room.pricePerNight} + ' kr'">1000</td>
-            <td>
-                <button type="submit" name="roomId" th:value="${room.id}" disabled>Boka</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</form>
-</div>
+          <!-- Available Rooms -->
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Tillgängliga rum</h2>
+            </div>
+            <div class="card-content">
+              <div
+                th:if="${#lists.isEmpty(availableRooms)}"
+                style="text-align: center; padding: 3rem; color: #64748b"
+              >
+                <i
+                  class="fas fa-bed"
+                  style="
+                    font-size: 3rem;
+                    margin-bottom: 1rem;
+                    display: block;
+                    opacity: 0.3;
+                  "
+                ></i>
+                <div
+                  style="
+                    font-size: 1.125rem;
+                    font-weight: 500;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  Inga rum tillgängliga
+                </div>
+                <div>Tyvärr finns inga lediga rum för de valda datumen.</div>
+              </div>
 
-<script>
-    const customerSelect = document.getElementById('customerId');
-    const bookButtons = document.querySelectorAll('button[name="roomId"]');
+              <div
+                th:if="${!#lists.isEmpty(availableRooms)}"
+                class="table-container"
+              >
+                <table>
+                  <thead>
+                    <tr>
+                      <th>
+                        <i
+                          class="fas fa-hashtag"
+                          style="margin-right: 0.5rem"
+                        ></i>
+                        Rumsnummer
+                      </th>
+                      <th>
+                        <i
+                          class="fas fa-door-open"
+                          style="margin-right: 0.5rem"
+                        ></i>
+                        Rumstyp
+                      </th>
+                      <th>
+                        <i
+                          class="fas fa-money-bill-wave"
+                          style="margin-right: 0.5rem"
+                        ></i>
+                        Pris per natt
+                      </th>
+                      <th>
+                        <i
+                          class="fas fa-calendar-check"
+                          style="margin-right: 0.5rem"
+                        ></i>
+                        Boka
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="room : ${availableRooms}" class="fade-in">
+                      <td>
+                        <span
+                          style="font-weight: 600; color: #1e293b"
+                          th:text="${room.roomNumber}"
+                          >101</span
+                        >
+                      </td>
+                      <td>
+                        <span
+                          class="badge"
+                          th:classappend="${room.roomType == 'SINGLE'} ? 'badge-blue' : (${room.roomType == 'DOUBLE'} ? 'badge-green' : 'badge-purple')"
+                          th:text="${room.roomType}"
+                          >SINGLE</span
+                        >
+                      </td>
+                      <td>
+                        <span
+                          style="font-weight: 500; color: #059669"
+                          th:text="${room.pricePerNight} + ' kr'"
+                          >750 kr</span
+                        >
+                      </td>
+                      <td>
+                        <button
+                          type="submit"
+                          name="roomId"
+                          th:value="${room.id}"
+                          class="btn btn-primary btn-sm"
+                          disabled
+                        >
+                          <i class="fas fa-calendar-check"></i>
+                          Boka rum
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </form>
+      </main>
+    </div>
 
-    customerSelect.addEventListener('change', () => {
-        const selected = customerSelect.value !== "";
-        bookButtons.forEach(btn => btn.disabled = !selected);
-    });
-</script>
+    <style>
+      .badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        border-radius: 9999px;
+        text-transform: uppercase;
+        letter-spacing: 0.025em;
+      }
 
-</body>
+      .badge-blue {
+        background-color: #dbeafe;
+        color: #1e40af;
+      }
+
+      .badge-green {
+        background-color: #d1fae5;
+        color: #065f46;
+      }
+
+      .badge-purple {
+        background-color: #e9d5ff;
+        color: #7c3aed;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #374151;
+        margin-bottom: 0.5rem;
+      }
+
+      .form-select {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        background-color: white;
+        cursor: pointer;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .form-select:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+    </style>
+
+    <script>
+      const customerSelect = document.getElementById('customerId');
+      const bookButtons = document.querySelectorAll('button[name="roomId"]');
+
+      customerSelect.addEventListener('change', () => {
+        const selected = customerSelect.value !== '';
+        bookButtons.forEach((btn) => {
+          btn.disabled = !selected;
+          if (selected) {
+            btn.classList.remove('btn-secondary');
+            btn.classList.add('btn-primary');
+          } else {
+            btn.classList.remove('btn-primary');
+            btn.classList.add('btn-secondary');
+          }
+        });
+      });
+    </script>
+  </body>
 </html>

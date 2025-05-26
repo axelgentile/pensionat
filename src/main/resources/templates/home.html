@@ -1,44 +1,134 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Home</title>
-    <link rel="stylesheet" th:href="@{/css/index.css}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-</head>
-<body>
-
-<div class="app-body">
-    <div class="sidebar grid-column">
-        <div class="header">
-            <div class="logo">
-                BookMe
-            </div>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BookMe - Hotellbokningssystem</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/c4cbc11728.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="logo-container">
+          <div class="logo">BookMe</div>
+          <div class="logo-subtitle">Hotellbokningssystem</div>
         </div>
 
-        <div class="menu">
-            <div class="menu-item">
-                <span class="icon"><i class="fa-solid fa-book"></i></span>
-                <span class="title">Bokningar</span>
-            </div>
-            <div class="menu-item">
-                <span class="icon"><i class="fa-solid fa-user"></i></span>
-                <span class="title">Kunder</span>
-            </div>
-            <div class="menu-item">
-                <span class="icon"><i class="fa-solid fa-house"></i></span>
-                <span class="title">Rum</span>
-            </div>
+        <nav class="nav-menu">
+          <div class="nav-section">
+            <div class="nav-section-title">Huvudmeny</div>
+            <a href="/bookings/all" class="nav-item">
+              <span class="icon"><i class="fas fa-calendar-check"></i></span>
+              <span>Bokningar</span>
+            </a>
+            <a href="/customers/all" class="nav-item">
+              <span class="icon"><i class="fas fa-users"></i></span>
+              <span>Kunder</span>
+            </a>
+            <a href="/rooms/all" class="nav-item">
+              <span class="icon"><i class="fas fa-bed"></i></span>
+              <span>Rum</span>
+            </a>
+          </div>
+
+          <div class="nav-section">
+            <div class="nav-section-title">Verktyg</div>
+            <a href="/bookings/search" class="nav-item">
+              <span class="icon"><i class="fas fa-search"></i></span>
+              <span>Sök lediga rum</span>
+            </a>
+            <a href="/bookings/new" class="nav-item">
+              <span class="icon"><i class="fas fa-plus-circle"></i></span>
+              <span>Ny bokning</span>
+            </a>
+            <a href="/customers/register" class="nav-item">
+              <span class="icon"><i class="fas fa-user-plus"></i></span>
+              <span>Registrera kund</span>
+            </a>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="page-header">
+          <h1 class="page-title">Välkommen till BookMe</h1>
+          <p class="page-subtitle">
+            Hantera hotellbokningar, kunder och rum på ett enkelt sätt
+          </p>
         </div>
 
+        <!-- Stats Overview -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value">24</div>
+            <div class="stat-label">Aktiva bokningar</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">156</div>
+            <div class="stat-label">Registrerade kunder</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">45</div>
+            <div class="stat-label">Tillgängliga rum</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">89%</div>
+            <div class="stat-label">Beläggningsgrad</div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Snabbåtgärder</h2>
+          </div>
+          <div class="card-content">
+            <div class="page-actions">
+              <a href="/bookings/new" class="btn btn-primary btn-lg">
+                <i class="fas fa-plus"></i>
+                Skapa ny bokning
+              </a>
+              <a href="/bookings/search" class="btn btn-secondary btn-lg">
+                <i class="fas fa-search"></i>
+                Sök lediga rum
+              </a>
+              <a href="/customers/register" class="btn btn-success btn-lg">
+                <i class="fas fa-user-plus"></i>
+                Registrera kund
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Senaste aktivitet</h2>
+          </div>
+          <div class="card-content">
+            <p style="color: #64748b; text-align: center; padding: 2rem">
+              <i
+                class="fas fa-clock"
+                style="font-size: 2rem; margin-bottom: 1rem; display: block"
+              ></i>
+              Här visas senaste bokningar och aktiviteter när systemet är
+              anslutet till databasen.
+            </p>
+          </div>
+        </div>
+      </main>
     </div>
-    <div class="main-content grid-column">
-        Main Content
-    </div>
-</div>
-.
-<script src="https://kit.fontawesome.com/c4cbc11728.js" crossorigin="anonymous"></script>
-</body>
+  </body>
 </html>

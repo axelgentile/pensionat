@@ -1,39 +1,293 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="sv">
-<head>
+  <head>
     <meta charset="UTF-8" />
-    <title>Sök lediga rum</title>
-    <link rel="stylesheet" href="/css/style.css" />
-</head>
-<body>
-
-<div class="sidebar">
-    <h2>BookMe</h2>
-    <a th:href="@{/customers/all}">Kunder</a>
-    <a th:href="@{/rooms/all}">Rum</a>
-    <a th:href="@{/bookings/all}">Bokningar</a>
-</div>
-<h1>Sök lediga rum</h1>
-<div style="display: flex; justify-content: center; margin-top: 40px;">
-    <form th:action="@{/bookings/searchAvailableRooms}" method="post" th:object="${roomSearchDto}">
-        <div style="display: flex; flex-direction: column; gap: 10px; width: 300px;">
-            <label for="checkIn">Check-in datum:</label>
-            <input type="date" th:field="*{checkIn}" id="checkIn" />
-            <div th:if="${#fields.hasErrors('checkIn')}" th:errors="*{checkIn}" style="color: red"></div>
-
-            <label for="checkOut">Check-out datum:</label>
-            <input type="date" th:field="*{checkOut}" id="checkOut" />
-            <div th:if="${#fields.hasErrors('checkOut')}" th:errors="*{checkOut}" style="color: red"></div>
-
-            <label for="guests">Antal gäster:</label>
-            <input type="number" th:field="*{guests}" id="guests" min="1" />
-            <div th:if="${#fields.hasErrors('guests')}" th:errors="*{guests}" style="color: red"></div>
-
-            <button type="submit">Sök</button>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sök lediga rum - BookMe</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/c4cbc11728.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="logo-container">
+          <div class="logo">BookMe</div>
+          <div class="logo-subtitle">Hotellbokningssystem</div>
         </div>
-    </form>
-</div>
 
+        <nav class="nav-menu">
+          <div class="nav-section">
+            <div class="nav-section-title">Huvudmeny</div>
+            <a href="/bookings/all" class="nav-item">
+              <span class="icon"><i class="fas fa-calendar-check"></i></span>
+              <span>Bokningar</span>
+            </a>
+            <a href="/customers/all" class="nav-item">
+              <span class="icon"><i class="fas fa-users"></i></span>
+              <span>Kunder</span>
+            </a>
+            <a href="/rooms/all" class="nav-item">
+              <span class="icon"><i class="fas fa-bed"></i></span>
+              <span>Rum</span>
+            </a>
+          </div>
 
-</body>
+          <div class="nav-section">
+            <div class="nav-section-title">Verktyg</div>
+            <a href="/bookings/search" class="nav-item active">
+              <span class="icon"><i class="fas fa-search"></i></span>
+              <span>Sök lediga rum</span>
+            </a>
+            <a href="/bookings/new" class="nav-item">
+              <span class="icon"><i class="fas fa-plus-circle"></i></span>
+              <span>Ny bokning</span>
+            </a>
+            <a href="/customers/register" class="nav-item">
+              <span class="icon"><i class="fas fa-user-plus"></i></span>
+              <span>Registrera kund</span>
+            </a>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="page-header">
+          <h1 class="page-title">
+            <i
+              class="fas fa-search"
+              style="margin-right: 0.5rem; color: #3b82f6"
+            ></i>
+            Sök lediga rum
+          </h1>
+          <p class="page-subtitle">Hitta tillgängliga rum för dina gäster</p>
+        </div>
+
+        <!-- Search Form -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Sökkriterier</h2>
+          </div>
+          <div class="card-content">
+            <form
+              th:action="@{/bookings/searchAvailableRooms}"
+              method="post"
+              th:object="${roomSearchDto}"
+            >
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: 1fr 1fr 1fr;
+                  gap: 1.5rem;
+                  margin-bottom: 2rem;
+                "
+              >
+                <div class="form-group">
+                  <label for="checkIn" class="form-label">
+                    <i
+                      class="fas fa-calendar-alt"
+                      style="margin-right: 0.5rem"
+                    ></i>
+                    Check-in datum
+                  </label>
+                  <input
+                    type="date"
+                    th:field="*{checkIn}"
+                    id="checkIn"
+                    class="form-input"
+                    required
+                  />
+                  <div
+                    class="message message-error"
+                    th:if="${#fields.hasErrors('checkIn')}"
+                    th:errors="*{checkIn}"
+                  ></div>
+                </div>
+
+                <div class="form-group">
+                  <label for="checkOut" class="form-label">
+                    <i
+                      class="fas fa-calendar-alt"
+                      style="margin-right: 0.5rem"
+                    ></i>
+                    Check-out datum
+                  </label>
+                  <input
+                    type="date"
+                    th:field="*{checkOut}"
+                    id="checkOut"
+                    class="form-input"
+                    required
+                  />
+                  <div
+                    class="message message-error"
+                    th:if="${#fields.hasErrors('checkOut')}"
+                    th:errors="*{checkOut}"
+                  ></div>
+                </div>
+
+                <div class="form-group">
+                  <label for="guests" class="form-label">
+                    <i class="fas fa-users" style="margin-right: 0.5rem"></i>
+                    Antal gäster
+                  </label>
+                  <input
+                    type="number"
+                    th:field="*{guests}"
+                    id="guests"
+                    class="form-input"
+                    min="1"
+                    max="10"
+                    placeholder="1"
+                    required
+                  />
+                  <div
+                    class="message message-error"
+                    th:if="${#fields.hasErrors('guests')}"
+                    th:errors="*{guests}"
+                  ></div>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 1rem">
+                <button type="submit" class="btn btn-primary btn-lg">
+                  <i class="fas fa-search"></i>
+                  Sök lediga rum
+                </button>
+                <a href="/bookings/search" class="btn btn-outline">
+                  <i class="fas fa-redo"></i>
+                  Rensa
+                </a>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Search Tips -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Söktips</h2>
+          </div>
+          <div class="card-content">
+            <div
+              style="
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1rem;
+              "
+            >
+              <div style="display: flex; align-items: start; gap: 0.75rem">
+                <i
+                  class="fas fa-lightbulb"
+                  style="color: #f59e0b; margin-top: 0.25rem"
+                ></i>
+                <div>
+                  <h3
+                    style="
+                      color: #1e293b;
+                      margin-bottom: 0.25rem;
+                      font-size: 0.875rem;
+                      font-weight: 600;
+                    "
+                  >
+                    Välj rätt datum
+                  </h3>
+                  <p style="color: #64748b; font-size: 0.75rem">
+                    Check-out datum måste vara efter check-in datum.
+                  </p>
+                </div>
+              </div>
+              <div style="display: flex; align-items: start; gap: 0.75rem">
+                <i
+                  class="fas fa-info-circle"
+                  style="color: #3b82f6; margin-top: 0.25rem"
+                ></i>
+                <div>
+                  <h3
+                    style="
+                      color: #1e293b;
+                      margin-bottom: 0.25rem;
+                      font-size: 0.875rem;
+                      font-weight: 600;
+                    "
+                  >
+                    Antal gäster
+                  </h3>
+                  <p style="color: #64748b; font-size: 0.75rem">
+                    Ange det totala antalet gäster som ska bo på rummet.
+                  </p>
+                </div>
+              </div>
+              <div style="display: flex; align-items: start; gap: 0.75rem">
+                <i
+                  class="fas fa-clock"
+                  style="color: #10b981; margin-top: 0.25rem"
+                ></i>
+                <div>
+                  <h3
+                    style="
+                      color: #1e293b;
+                      margin-bottom: 0.25rem;
+                      font-size: 0.875rem;
+                      font-weight: 600;
+                    "
+                  >
+                    Snabb sökning
+                  </h3>
+                  <p style="color: #64748b; font-size: 0.75rem">
+                    Resultatet visas direkt efter att du klickat på sök.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <style>
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #374151;
+        margin-bottom: 0.5rem;
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .form-input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+
+      @media (max-width: 768px) {
+        .card-content form > div:first-child {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </body>
 </html>
