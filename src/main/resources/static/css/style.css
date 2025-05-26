@@ -62,3 +62,10 @@ body {
     font-size: 1.2rem;
 
 }
+
+.main-content {
+    width: 80%;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}

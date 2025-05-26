@@ -4,6 +4,8 @@
     <link rel="stylesheet" href="/css/style.css" />
     <meta charset="UTF-8">
     <title>Lediga rum</title>
+
+
 </head>
 <body>
 
@@ -15,9 +17,10 @@
     <a th:href="@{/bookings/new}">Ny Bokning</a>
 </div>
 
+<div class="main-content">
 <h1>Boka ett rum</h1>
 
-<div th:if="${errorMessage}" style="color: red;">
+<div th:if="${errorMessage}" style="color: red; text-align: center; margin-bottom: 1em; font-weight: bold">
     <p th:text="${errorMessage}"></p>
 </div>
 
@@ -40,7 +43,6 @@
     <input type="hidden" name="checkOutDate" th:value="${checkOut}" />
     <input type="hidden" name="guests" th:value="${guests}" />
 
-    <h2>Lediga rum</h2>
     <table border="1">
         <thead>
         <tr>
@@ -62,6 +64,7 @@
         </tbody>
     </table>
 </form>
+</div>
 
 <script>
     const customerSelect = document.getElementById('customerId');

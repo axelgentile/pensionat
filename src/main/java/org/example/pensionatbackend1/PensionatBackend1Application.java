@@ -12,8 +12,4 @@ public class PensionatBackend1Application {
         SpringApplication.run(PensionatBackend1Application.class, args);
     }
 
-    @Bean
-    public HiddenHttpMethodFilter hiddenHttpMethodFilter() {
-        return new HiddenHttpMethodFilter();
-    }
 }

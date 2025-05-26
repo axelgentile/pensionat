@@ -1,9 +1,8 @@
 package org.example.pensionatbackend1.controller;
+
 import jakarta.validation.Valid;
 import org.example.pensionatbackend1.Models.Room;
-import org.example.pensionatbackend1.dto.BookingDto;
-import org.example.pensionatbackend1.dto.CustomerDto;
-import org.example.pensionatbackend1.dto.RoomDto;
+import org.example.pensionatbackend1.dto.*;
 import org.example.pensionatbackend1.mapper.CustomerMapper;
 import org.example.pensionatbackend1.mapper.RoomMapper;
 import org.example.pensionatbackend1.service.BookingService;
@@ -15,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.example.pensionatbackend1.dto.RoomSearchDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,11 +39,11 @@ public class BookingController {
     }
 
     @PostMapping("/delete/{id}")
-    public String cancelBooking(@PathVariable Long id, RedirectAttributes redirectAttributes){
-        try{
+    public String cancelBooking(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
             bookingService.deleteBooking(id);
             redirectAttributes.addFlashAttribute("bookingmessage", "Bokningen är avbokad");
-        } catch (Exception e){
+        } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Kunde inte avboka bokningen: " + e.getMessage());
         }
         return "redirect:/bookings/all";
@@ -56,6 +54,7 @@ public class BookingController {
         model.addAttribute("roomSearchDto", new RoomSearchDto());
         return "search-rooms";
     }
+
     @GetMapping("/new")
     public String showBookingForm(Model model) {
         model.addAttribute("roomSearchDto", new RoomSearchDto());
@@ -74,31 +73,20 @@ public class BookingController {
             return "search-rooms";
         }
 
-        List<Room> availableRooms = bookingService.searchAvailableRooms(
-                roomSearchDto.getCheckIn(),
-                roomSearchDto.getCheckOut(),
-                roomSearchDto.getGuests()
-        );
-
-        List<RoomDto> availableRoomDtos = availableRooms.stream()
-                .map(RoomMapper::toDto)
-                .toList();
-
-        List<CustomerDto> customers = customerService.getAllCustomers().stream()
-                .map(CustomerMapper::toDto)
-                .toList();
-
-        model.addAttribute("availableRooms", availableRoomDtos);
-        model.addAttribute("customers", customers);
-        model.addAttribute("checkIn", roomSearchDto.getCheckIn());
-        model.addAttribute("checkOut", roomSearchDto.getCheckOut());
-        model.addAttribute("guests", roomSearchDto.getGuests());
-
+        prepareAvailableRooms(model, roomSearchDto);
         return "available-rooms";
     }
 
     @PostMapping("/book")
-    public String createBooking(@ModelAttribute BookingDto bookingDto, RedirectAttributes redirectAttributes, Model model) {
+    public String createBooking(@Valid @ModelAttribute BookingDto bookingDto,
+                                BindingResult bindingResult,
+                                RedirectAttributes redirectAttributes,
+                                Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errorMessage", "Formuläret är inte korrekt ifyllt.");
+            return "available-rooms";
+        }
+
         try {
             bookingService.createBooking(bookingDto);
             redirectAttributes.addFlashAttribute("successMessage", "Bokning skapad!");
@@ -137,21 +125,10 @@ public class BookingController {
             return "edit-booking";
         }
 
-        List<Room> availableRooms = new ArrayList<>(bookingService.searchAvailableRooms(
-                roomSearchDto.getCheckIn(), roomSearchDto.getCheckOut(), roomSearchDto.getGuests()));
-
-        Room currentRoom = roomService.getRoomById(bookingDto.getRoomId());
-        if (currentRoom != null && !availableRooms.contains(currentRoom)) {
-            availableRooms.add(currentRoom);
-        }
-
-        model.addAttribute("booking", bookingDto);
-        model.addAttribute("roomSearchDto", roomSearchDto);
-        model.addAttribute("availableRooms", availableRooms);
-
+        List<Room> availableRooms = getAvailableRoomsWithCurrent(bookingId, roomSearchDto);
+        populateBookingModel(model, bookingDto, roomSearchDto, availableRooms);
         return "edit-booking";
     }
-
 
     @PostMapping("/edit/{bookingId}")
     public String updateBooking(
@@ -171,15 +148,50 @@ public class BookingController {
             model.addAttribute("successMessage", "Bokningen har uppdaterats.");
             return "redirect:/bookings/all";
         } catch (IllegalArgumentException e) {
+            List<Room> rooms = bookingService.searchAvailableRooms(
+                    roomSearchDto.getCheckIn(), roomSearchDto.getCheckOut(), roomSearchDto.getGuests());
             model.addAttribute("errorMessage", e.getMessage());
-            model.addAttribute("booking", bookingDto);
-            model.addAttribute("roomSearchDto", roomSearchDto);
-            model.addAttribute("availableRooms", bookingService.searchAvailableRooms(
-                    roomSearchDto.getCheckIn(), roomSearchDto.getCheckOut(), roomSearchDto.getGuests()));
+            populateBookingModel(model, bookingDto, roomSearchDto, rooms);
             return "edit-booking";
         }
     }
+
+
+    private void prepareAvailableRooms(Model model, RoomSearchDto roomSearchDto) {
+        List<RoomDto> roomDtos = bookingService.searchAvailableRooms(
+                        roomSearchDto.getCheckIn(),
+                        roomSearchDto.getCheckOut(),
+                        roomSearchDto.getGuests()
+                ).stream()
+                .map(RoomMapper::toDto)
+                .toList();
+
+        List<CustomerDto> customers = customerService.getAllCustomers().stream()
+                .map(CustomerMapper::toDto)
+                .toList();
+
+        model.addAttribute("availableRooms", roomDtos);
+        model.addAttribute("customers", customers);
+        model.addAttribute("checkIn", roomSearchDto.getCheckIn());
+        model.addAttribute("checkOut", roomSearchDto.getCheckOut());
+        model.addAttribute("guests", roomSearchDto.getGuests());
+    }
+
+    private List<Room> getAvailableRoomsWithCurrent(Long bookingId, RoomSearchDto searchDto) {
+        List<Room> available = new ArrayList<>(bookingService.searchAvailableRooms(
+                searchDto.getCheckIn(), searchDto.getCheckOut(), searchDto.getGuests()));
+
+        Room currentRoom = roomService.getRoomById(bookingService.getBookingById(bookingId).getRoomId());
+        if (currentRoom != null && !available.contains(currentRoom)) {
+            available.add(currentRoom);
+        }
+
+        return available;
+    }
+
+    private void populateBookingModel(Model model, BookingDto bookingDto, RoomSearchDto roomSearchDto, List<Room> rooms) {
+        model.addAttribute("booking", bookingDto);
+        model.addAttribute("roomSearchDto", roomSearchDto);
+        model.addAttribute("availableRooms", rooms.stream().map(RoomMapper::toDto).toList());
+    }
 }
-
-
-

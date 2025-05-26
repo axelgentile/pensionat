@@ -26,8 +26,8 @@ public class DataInitializer implements CommandLineRunner {
                     createRoom(201, RoomType.DOUBLE, 1195.00, 2),
                     createRoom(202, RoomType.SINGLE, 895.00, 0),
                     createRoom(203, RoomType.DOUBLE, 1195.00, 2),
-                    createRoom(301, RoomType.SINGLE, 995.00, 0),
-                    createRoom(302, RoomType.DOUBLE, 1295.00, 2),
+                    createRoom(301, RoomType.SINGLE, 895.00, 0),
+                    createRoom(302, RoomType.DOUBLE, 1195.00, 2),
                     createRoom(303, RoomType.SINGLE, 895.00, 0),
                     createRoom(304, RoomType.DOUBLE, 1195.00, 2)
             );
