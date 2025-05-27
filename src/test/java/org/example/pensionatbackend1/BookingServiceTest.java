@@ -68,7 +68,7 @@ public class BookingServiceTest {
         dto.setCheckOutDate(LocalDate.of(2025, 5, 28));
 
         Room room = new Room();
-        room.setId(1L); // ✅ FIXED
+        room.setId(1L);
         Customer customer = new Customer();
         Booking booking = new Booking();
 
@@ -94,7 +94,7 @@ public class BookingServiceTest {
         dto.setCheckOutDate(LocalDate.of(2025, 5, 28));
 
         Room room = new Room();
-        room.setId(1L); // ✅ FIXED
+        room.setId(1L);
         Customer customer = new Customer();
         Booking existingBooking = new Booking();
 
